@@ -73,7 +73,7 @@ static int TemplateCount;
 
 static twc_string TSTR(const char* String)
 {
-    twc_string Result = {};
+    twc_string Result = {0};
     Result.Ptr = String;
     Result.Size = strlen(Result.Ptr);
     return Result;
@@ -119,7 +119,7 @@ twc_string LookupStr(json_object* Object, char* Key)
     assert(Val != NULL);
     assert(JSON_TYPE(Val) == JSON_STRING);
     json_string Str = *(json_string*)Val;
-    twc_string Result = {};
+    twc_string Result = {0};
     Result.Ptr = Str.Start;
     Result.Size = Str.Length;
     return Result;
@@ -138,7 +138,7 @@ bool LookupBool(json_object* Object, char* Key)
 serialization_template
 ParseSerializationTemplate(tokenizer* Tokenizer)
 {
-    serialization_template Result = {};
+    serialization_template Result = {0};
 
     token TemplateDecl = RequireToken(Tokenizer, Token_Identifier);
     if (twc_StringCompare(TemplateDecl.Text.Value, TSTR("twc_param_serialization")) == 0) {
@@ -197,10 +197,10 @@ void Constantify(char* Dest, const char* Source, int Size)
 
 twc_strbuf ConstantifyPath(twc_string Path)
 {
-    twc_strbuf Result = {};
+    twc_strbuf Result = {0};
     Result.Ptr = malloc(Path.Size + 8);
     memcpy(Result.Ptr, "TWC_URL_", Result.Size += 8);
-    for (int SourceIndex = 0; SourceIndex < Path.Size; ++SourceIndex)
+    for (uint SourceIndex = 0; SourceIndex < Path.Size; ++SourceIndex)
     {
         if (Path.Ptr[SourceIndex] == '/') { Result.Ptr[Result.Size++] = '_'; }
         else if (Path.Ptr[SourceIndex] == ':') { continue; }
@@ -212,10 +212,10 @@ twc_strbuf ConstantifyPath(twc_string Path)
 
 twc_strbuf ToPascalCase(twc_string Identifier)
 {
-    twc_strbuf Result = {};
+    twc_strbuf Result = {0};
     Result.Ptr = malloc(Identifier.Size);
     bool Boundary = true;
-    for (int SourceIndex = 0; SourceIndex < Identifier.Size; ++SourceIndex)
+    for (uint SourceIndex = 0; SourceIndex < Identifier.Size; ++SourceIndex)
     {
         if (Identifier.Ptr[SourceIndex] == '_' || Identifier.Ptr[SourceIndex] == ':'
             || Identifier.Ptr[SourceIndex] == '[' || Identifier.Ptr[SourceIndex] == ']') { 
@@ -232,7 +232,7 @@ twc_strbuf ToPascalCase(twc_string Identifier)
 
 twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
 {
-    twc_strbuf Result = {};
+    twc_strbuf Result = {0};
     Result.Size = Path.Size + strlen("twc_") + strlen("_params"); // Upper bound
     if (Method.Exists) {
         Result.Size += strlen(twc_HttpMethodString[Method.Value]) + 1;
@@ -242,13 +242,13 @@ twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
     memcpy(Result.Ptr, "twc_", DestIndex += strlen("twc_"));
     if (Method.Exists) {
         const char* MethodStr = twc_HttpMethodString[Method.Value];
-        for (int i = 0; i < strlen(MethodStr); ++i) {
+        for (uint i = 0; i < strlen(MethodStr); ++i) {
             Result.Ptr[DestIndex + i] = tolower(MethodStr[i]);
         }
         DestIndex += strlen(MethodStr);
         Result.Ptr[DestIndex++] = '_';
     }
-    for (int SourceIndex = 0; 
+    for (uint SourceIndex = 0; 
          SourceIndex < Result.Size; 
          ++SourceIndex)
     {
@@ -265,7 +265,7 @@ twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
 
 twc_strbuf FunctionNameFromPath(twc_string Path, twc_http_method$ Method)
 {
-    twc_strbuf Result = {};
+    twc_strbuf Result = {0};
     Result.Size = Path.Size + strlen("twc_"); // Upper bound
     if (Method.Exists) {
         Result.Size += strlen(twc_HttpMethodString[Method.Value]) + 1;
@@ -275,14 +275,14 @@ twc_strbuf FunctionNameFromPath(twc_string Path, twc_http_method$ Method)
     memcpy(Result.Ptr, "twc_", DestIndex += strlen("twc_"));
     if (Method.Exists) {
         const char* MethodStr = twc_HttpMethodString[Method.Value];
-        for (int i = 0; i < strlen(MethodStr); ++i) {
+        for (uint i = 0; i < strlen(MethodStr); ++i) {
             Result.Ptr[DestIndex + i] = (i == 0 ? toupper : tolower)(MethodStr[i]);
         }
         DestIndex += strlen(MethodStr);
         Result.Ptr[DestIndex++] = '_';
     }
     bool NextCaps = true;
-    for (int SourceIndex = 0; 
+    for (uint SourceIndex = 0; 
          SourceIndex < Result.Size; 
          ++SourceIndex)
     {
@@ -310,6 +310,7 @@ twc_http_method GetHTTPMethod(twc_string String)
     if (twc_StringCompare(String, twc_ToString("POST")) == 0) return TWC_HTTP_POST;
     if (twc_StringCompare(String, twc_ToString("DELETE")) == 0) return TWC_HTTP_DELETE;
     assert(!"Invalid HTTP method!");
+    return (twc_http_method)-1;
 }
 
 const char* TranslateType(twc_string SchemaType, bool Required)
@@ -369,7 +370,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
             json_array EndpointsArray = *(json_array*)Parsed.Document;
             *Endpoints = (api_endpoint*)calloc(EndpointsArray.Length, sizeof(api_endpoint));
 
-            for (int i = 0; i < EndpointsArray.Length; ++i) 
+            for (uint i = 0; i < EndpointsArray.Length; ++i) 
             {
                 if (JSON_TYPE(EndpointsArray.Values[i]) != JSON_OBJECT) 
                 {
@@ -377,7 +378,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
                     return false;
                 }
 
-                api_endpoint Endpoint = {};
+                api_endpoint Endpoint = {0};
                 json_object* EndpointData = (json_object*)EndpointsArray.Values[i];
                 
                 Endpoint.Path = LookupStr(EndpointData, "path");
@@ -389,7 +390,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
                 }
                 else 
                 {
-                    twc_string ParamName = {};
+                    twc_string ParamName = {0};
                     ParamName.Ptr = PathParamStart + 1;
 
                     char* PathParamEnd = (memchr(ParamName.Ptr, '/', Endpoint.Path.Size - (ParamName.Ptr - Endpoint.Path.Ptr)));
@@ -419,7 +420,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
                 Endpoint.ParamCount = ParamsArray.Length;
                 Endpoint.Params = calloc(ParamsArray.Length, sizeof(api_parameter));
 
-                for (int p = 0; p < ParamsArray.Length; ++p) 
+                for (uint p = 0; p < ParamsArray.Length; ++p) 
                 {
                     json_object* ParamData = (json_object*)ParamsArray.Values[p];
                     twc_strbuf PascalName = ToPascalCase(LookupStr(ParamData, "name"));
@@ -507,11 +508,11 @@ void GenerateEndpointDeclaration(FILE* OutFile, api_endpoint* Endpoint)
         if (!Param->Required) { continue; }
         const char* Type = TranslateType(Param->Type, true);
 
-        for (int s = 0; s < FuncName.Size + 1; ++s) { fprintf(OutFile, " "); }
+        for (uint s = 0; s < FuncName.Size + 1; ++s) { fprintf(OutFile, " "); }
         fprintf(OutFile, "%s %.*s,\n", Type, TSTRf(Param->FieldName));
     }
 
-    for (int s = 0; s < FuncName.Size + 1; ++s) { fprintf(OutFile, " "); }
+    for (uint s = 0; s < FuncName.Size + 1; ++s) { fprintf(OutFile, " "); }
     fprintf(OutFile, "%.*s Params)", TSTRf(StructName));
 
     free(StructName.Ptr);
@@ -535,7 +536,7 @@ void GenerateEndpointSerialization(FILE* OutFile, api_endpoint* Endpoint)
             bool ForURLSlug = (Endpoint->PathParamName.Exists &&
                                twc_StringCompare(Endpoint->PathParamName.Value, Param.Name) == 0);
             bool FoundTemplate = false;
-            twc_string TemplateText = {};
+            twc_string TemplateText = {0};
             for (int TemplIndex = 0; TemplIndex < TemplateCount; ++TemplIndex)
             {
                 serialization_template Template = Templates[TemplIndex];
@@ -557,13 +558,13 @@ void GenerateEndpointSerialization(FILE* OutFile, api_endpoint* Endpoint)
 
             const char* C;
             const char* C2;
-            for (C = C2 = TemplateText.Ptr; (C - TemplateText.Ptr) < TemplateText.Size; ++C)
+            for (C = C2 = TemplateText.Ptr; (C - TemplateText.Ptr) < (int)TemplateText.Size; ++C)
             {
                 if (*C == '@') {
                     fprintf(OutFile, "%.*s", (int)(C - C2), C2);
                     twc_string ReplaceToken;
                     C2 = C + 2;
-                    for (; (C2 - TemplateText.Ptr) < TemplateText.Size && *(C2 - 1) != '@'; ++C2);
+                    for (; (C2 - TemplateText.Ptr) < (int)TemplateText.Size && *(C2 - 1) != '@'; ++C2);
                     ReplaceToken.Ptr = C;
                     ReplaceToken.Size = C2 - C;
 
@@ -617,18 +618,29 @@ int main(int ArgCount, char* ArgValues[])
 {
     if (ArgCount <= 2) 
     { 
-        puts("Usage: twc_codegen <file with templates> <api json schema>");
-        puts("    e.g. twc_codgen twitter.c api.json");
+        puts("Usage: twc_codegen <file with templates> <api json schema> [<output header file> <output c file>]");
+        puts("    e.g. twc_codegen twitter.c api.json");
         return EXIT_FAILURE;
     }
 
-    twc_strbuf DeclBuf = {};
-    FILE* DeclStream = open_memstream(&DeclBuf.Ptr, &DeclBuf.Size);
+    char* DeclName = ArgCount >= 3 ? ArgValues[3] : "code/twitter_api.h";
+    char* ImplName = ArgCount >= 4 ? ArgValues[4] : "code/twitter_api.c";
 
-    twc_strbuf ImplBuf = {};
-    FILE* ImplStream = open_memstream(&ImplBuf.Ptr, &ImplBuf.Size);
+    twc_strbuf DeclBuf = {0};
+    FILE* DeclStream = fopen(DeclName, "w");
+    if (DeclStream == NULL) {
+        printf("Could not open %s for writing!\n", DeclName);
+        return EXIT_FAILURE;
+    }
 
-    tokenizer T = {};
+    twc_strbuf ImplBuf = {0};
+    FILE* ImplStream = fopen(ImplName, "w");
+    if (ImplStream == NULL) {
+        printf("Could not open %s for writing!\n", ImplName);
+        return EXIT_FAILURE;
+    }
+
+    tokenizer T = {0};
     tokenizer* Tokenizer = &T;
 
     char* TemplateFile = ReadFileAndNullTerminate(ArgValues[1]);
@@ -675,15 +687,6 @@ int main(int ArgCount, char* ArgValues[])
 
     fflush(DeclStream);
     fflush(ImplStream);
-
-    FILE* Header = fopen("code/twitter_api.h", "w");
-    FILE* Body = fopen("code/twitter_api.c", "w");
-
-    DumpStreamToFile(DeclStream, Header);
-    DumpStreamToFile(ImplStream, Body);
-
-    fclose(Header);
-    fclose(Body);
 
     fclose(DeclStream);
     fclose(ImplStream);

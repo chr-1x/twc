@@ -1,7 +1,7 @@
 #include <stdio.h> // For snprintf
 #include <string.h> // For memcpy
 #include <stdlib.h>
-#include <alloca.h>
+#include <malloc.h> // For alloca
 #include <assert.h>
 #include <time.h>
 #include <curl/curl.h>
@@ -31,7 +31,7 @@ ClampAmount(int Desired, int Available)
 
 twc_string TSTR(const char* String)
 {
-    twc_string Result = {};
+    twc_string Result = {0};
     Result.Ptr = String;
     Result.Size = strlen(Result.Ptr);
     return Result;
