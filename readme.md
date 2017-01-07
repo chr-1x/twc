@@ -15,44 +15,56 @@ cURL is the sole dependency.
 Before you can call any twitter API functions, you must create and initialize a
 `twc_state` instance:
 
-    twc_oauth_keys Keys; // Populate with your OAuth Consumer/Token keys
-    // OAuth pin authentication coming eventually
-    
-    twc_state Twitter;
-    twc_Init(&Twitter, Keys);
+```C
+twc_oauth_keys Keys; // Populate with your OAuth Consumer/Token keys
+// OAuth pin authentication coming eventually
+
+twc_state Twitter;
+twc_Init(&Twitter, Keys);
+```
 
 Now you can call any function in the Twitter API. For example, to double-check
 your OAuth keys are working:
 
-    twc_call_result VerifyResult = 
-        twc_Account_VerifyCredentials(&Twitter, (twc_account_verifycredentials_params){});
-    printf("Twitter: %.*s\n", (int)VerifyResult.Data.Size, VerifyResult.Data.Ptr);
+```C
+twc_call_result VerifyResult = 
+    twc_Account_VerifyCredentials(&Twitter, (twc_account_verifycredentials_params){});
+printf("Twitter: %.*s\n", (int)VerifyResult.Data.Size, VerifyResult.Data.Ptr);
+```
     
 Tweet With C returns all API call results as strings (`twc_string`). You can
 parse them with your own JSON library, or you can parse them with the provided
 JSON parser (also used in the code generator):
 
-    json_result Result = json_Parse((char*)VerifyResult.Data.Ptr, (int)VerifyResult.Data.Size);
+```C
+json_result Result = json_Parse((char*)VerifyResult.Data.Ptr, (int)VerifyResult.Data.Size);
+```
 
 When you're done, to free allocated memory and do cURL cleanup, call `twc_Close`:
 
-    twc_Close(&Twitter);
+```C
+twc_Close(&Twitter);
+```
 
 ## Advanced Usage
 
 `twc_InitEx` takes several parameters which you can use to control how memory is
 allocated during library use (by default, it uses `malloc` and `free`):
 
-    twc_InitEx(&Twitter, Keys, MyErrorBuffer, sizeof(MyErrorBuffer), MyMalloc, MyFree);
+```C
+twc_InitEx(&Twitter, Keys, MyErrorBuffer, sizeof(MyErrorBuffer), MyMalloc, MyFree);
+```
 
 If you don't want to use the provided API functions, or one doesn't yet exist
 for the endpoint you're trying to access, you can make calls directly:
 
-    twc_key_value_list MyParamList = NULL;
-    // Load up some params...
-    MyParamList = twc_KeyValueList_InsertSorted(ParamList, &SomeKeyValue);
+```C
+twc_key_value_list MyParamList = NULL;
+// Load up some params...
+MyParamList = twc_KeyValueList_InsertSorted(ParamList, &SomeKeyValue);
 
-    twc_MakeCall(&Twitter, TWC_HTTP_GET, "https://api.twitter.com/42.0/undocumented.json", MyParamList);
+twc_MakeCall(&Twitter, TWC_HTTP_GET, "https://api.twitter.com/42.0/undocumented.json", MyParamList);
+```
     
 In the current version of the library, all API calls are synchronous (blocking).
 In the future, support may be added for asynchronous calls based on cURL's
