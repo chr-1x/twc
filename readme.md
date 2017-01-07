@@ -115,11 +115,23 @@ produce good code when given to the code generator. Similarly, the
 to be working productions based on the `api.json` in the repository. If for some
 reason the code generator does not work for you, they are your backup plan.
 
-## Windows
+## With Windows
 
-Support is in the works for building with Visual Studio through nmake or via a
-batch script. All code is MSVC compatible, so if you are an enterprising
-individual you may be able to build it before these tools are ready.
+To build on Windows, you will need either Visual Studio with C++ support
+installed, or the [Visual C++ Build Tools](https://blogs.msdn.microsoft.com/vcblog/2015/11/02/announcing-visual-c-build-tools-2015-standalone-c-tools-for-build-environments/).
+
+Only compiling with VS 2015 has been tested. Later versions should be fine,
+earlier versions may need additional support.
+
+The command-line build tools are only available once `vcvarsall.bat` from
+your VS installation has been run. For many Visual Studio installations, it may
+be easier to simply use the 'Visual Studio Command Prompt' shortcut that is
+often created when it installs. If this is not possible, or you wish to run it
+from an existing prompt, look for `vcvarsall.bat` in a directory similar to
+`C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC`.
+
+After that, you can simply execute `build.bat` from the directory where you
+cloned the repository. 
 
 
       .    ,--._  
