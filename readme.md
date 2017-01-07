@@ -31,6 +31,14 @@ twc_call_result VerifyResult =
     twc_Account_VerifyCredentials(&Twitter, (twc_account_verifycredentials_params){});
 printf("Twitter: %.*s\n", (int)VerifyResult.Data.Size, VerifyResult.Data.Ptr);
 ```
+
+And of course, to make a tweet:
+
+```C
+twc_call_result TweetResult = 
+    twc_Statuses_Update(&Twitter, twc_ToString("just setting up my twttr"), (twc_statuses_update_params){});
+printf("Twitter: %.*s\n", (int)TweetResult.Data.Size, TweetResult.Data.Ptr);
+```
     
 Tweet With C returns all API call results as strings (`twc_string`). You can
 parse them with your own JSON library, or you can parse them with the provided
