@@ -82,7 +82,7 @@ static token GetToken(tokenizer* Tokenizer)
 {
     EatAllWhitespace(Tokenizer);
 
-    token Token = {};
+    token Token = {0};
     switch(*Tokenizer->At) 
     {
         case EOF:
@@ -112,7 +112,7 @@ static token GetToken(tokenizer* Tokenizer)
             Token.Begin = Tokenizer->At;
             if (Tokenizer->At[1] == '/') {
                 Token.Type = Token_Comment;
-                twc_string Text = {};
+                twc_string Text = {0};
                 Text.Ptr = ++Tokenizer->At + 1;
                 while (*Tokenizer->At && *Tokenizer->At != '\r' && *Tokenizer->At != '\n') {
                     ++Tokenizer->At;
@@ -126,7 +126,7 @@ static token GetToken(tokenizer* Tokenizer)
             }
             else if (Tokenizer->At[1] == '*') {
                 Token.Type = Token_Comment;
-                twc_string Text = {};
+                twc_string Text = {0};
                 Tokenizer->At += 2;
                 Text.Ptr = Tokenizer->At;
                 // No comment nesting in C, so we'll just parse along on our merry way until we find
@@ -152,7 +152,7 @@ static token GetToken(tokenizer* Tokenizer)
         case '#':
         {
             Token.Type = Token_Preprocessor;
-            twc_string Text = {};
+            twc_string Text = {0};
             Text.Ptr = Token.Begin = Tokenizer->At;
 
             while (*Tokenizer->At && Tokenizer->At[0] != '\r' && Tokenizer->At[0] != '\n') 
@@ -176,7 +176,7 @@ static token GetToken(tokenizer* Tokenizer)
         {
             Token.Begin = Tokenizer->At;
             Token.Type = Token_String;
-            twc_string Text = {};
+            twc_string Text = {0};
             Text.Ptr = ++Tokenizer->At;
             while(*Tokenizer->At && *Tokenizer->At != '"') 
             {
@@ -201,7 +201,7 @@ static token GetToken(tokenizer* Tokenizer)
                 Token.Type = Token_Identifier;
                 Token.Begin = Tokenizer->At;
 
-                twc_string Text = {};
+                twc_string Text = {0};
                 Text.Ptr = Tokenizer->At;
 
                 while (CharIsAlpha(*Tokenizer->At) || 

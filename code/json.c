@@ -3,7 +3,7 @@
 #include <string.h> // For memset 
 #include <stdbool.h>
 #include <assert.h>
-#include <alloca.h> // TODO is there another way to do the JSON array parsing?
+#include <malloc.h> // for alloca // TODO is there another way to do the JSON array parsing?
 #include "json.h"
 
 #ifndef JSON_MALLOC
@@ -16,6 +16,13 @@
 #else
 #define JSON_INLINE inline
 #endif
+
+#ifdef _MSC_VER
+#define alloca _alloca
+#include "asprintf.h"
+#endif
+
+typedef unsigned int uint;
 
 typedef struct
 {
@@ -142,7 +149,7 @@ JSON_INLINE bool
 json_StringsEqual(json_string A, json_string B)
 {
     if (A.Length != B.Length) return false;
-    for (int Index = 0;
+    for (uint Index = 0;
         Index < A.Length;
         ++Index)
     {
@@ -159,7 +166,7 @@ json_ReadString(memory_arena* Arena, json_string Src)
     if (Value == NULL) { return Dest; }
 
     int DestIndex = 0;
-    for (int SourceIndex = 0; 
+    for (uint SourceIndex = 0; 
         SourceIndex < Src.Length; 
         ++SourceIndex)
     {
@@ -224,7 +231,7 @@ JSON_INLINE bool
 TokenEquals(token Token, const char *Match)
 {
     const char *At = Match;
-    for(int Index = 0;
+    for(uint Index = 0;
         Index < Token.Text.Length;
         ++Index, ++At)
     {
