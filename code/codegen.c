@@ -250,7 +250,7 @@ twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
         Result.Ptr[DestIndex++] = '_';
     }
     for (uint SourceIndex = 0; 
-         SourceIndex < Result.Size; 
+         SourceIndex < Path.Size; 
          ++SourceIndex)
     {
         if (Path.Ptr[SourceIndex] == '/') { Result.Ptr[DestIndex++] = '_'; }
