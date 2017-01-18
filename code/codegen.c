@@ -97,6 +97,7 @@ char* ReadFileAndNullTerminate(const char* Filename)
     char* In = (char*)malloc(InFileSize + 1);
     fread(In, InFileSize, 1, InFile);
     In[InFileSize] = 0;
+    fclose(InFile);
     return In;
 }
 
@@ -623,17 +624,15 @@ int main(int ArgCount, char* ArgValues[])
         return EXIT_FAILURE;
     }
 
-    char* DeclName = ArgCount >= 3 ? ArgValues[3] : "code/twitter_api.h";
-    char* ImplName = ArgCount >= 4 ? ArgValues[4] : "code/twitter_api.c";
+    char* DeclName = ArgCount >= 4 ? ArgValues[3] : "code/twitter_api.h";
+    char* ImplName = ArgCount >= 5 ? ArgValues[4] : "code/twitter_api.c";
 
-    twc_strbuf DeclBuf = {0};
     FILE* DeclStream = fopen(DeclName, "w");
     if (DeclStream == NULL) {
         printf("Could not open %s for writing!\n", DeclName);
         return EXIT_FAILURE;
     }
 
-    twc_strbuf ImplBuf = {0};
     FILE* ImplStream = fopen(ImplName, "w");
     if (ImplStream == NULL) {
         printf("Could not open %s for writing!\n", ImplName);

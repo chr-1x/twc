@@ -1,7 +1,8 @@
 #include <stdio.h> // For snprintf
 #include <string.h> // For memcpy
 #include <stdlib.h>
-#include <malloc.h> // For alloca
+#include <malloc.h> // For alloca (GCC, MSVC)
+#include <alloca.h> // For alloca (standard)
 #include <assert.h>
 #include <time.h>
 #include <curl/curl.h>

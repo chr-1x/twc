@@ -1,6 +1,6 @@
 extern twc_call_result
 twc_Get_Account_Settings(twc_state* Twitter,
-                         twc_get_account_settingsr_params Params)
+                         twc_get_account_settings_params Params)
 {
     twc_key_value_list ParamList = NULL;
     return twc_MakeCall(Twitter, 0, TWC_URL_ACCOUNT_SETTINGS, ParamList);
@@ -8,7 +8,7 @@ twc_Get_Account_Settings(twc_state* Twitter,
 
 extern twc_call_result
 twc_Account_VerifyCredentials(twc_state* Twitter,
-                              twc_account_verifycredentialse_params Params)
+                              twc_account_verifycredentials_params Params)
 {
     twc_key_value_list ParamList = NULL;
  
@@ -34,7 +34,7 @@ twc_Account_VerifyCredentials(twc_state* Twitter,
 
 extern twc_call_result
 twc_Application_RateLimitStatus(twc_state* Twitter,
-                                twc_application_ratelimitstatusn_params Params)
+                                twc_application_ratelimitstatus_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -48,7 +48,7 @@ twc_Application_RateLimitStatus(twc_state* Twitter,
 
 extern twc_call_result
 twc_Blocks_Ids(twc_state* Twitter,
-               twc_blocks_idsx_params Params)
+               twc_blocks_ids_params Params)
 {
     twc_key_value_list ParamList = NULL;
  
@@ -68,7 +68,7 @@ twc_Blocks_Ids(twc_state* Twitter,
 
 extern twc_call_result
 twc_Blocks_List(twc_state* Twitter,
-                twc_blocks_listdd_params Params)
+                twc_blocks_list_params Params)
 {
     twc_key_value_list ParamList = NULL;
  
@@ -95,7 +95,7 @@ twc_Blocks_List(twc_state* Twitter,
 extern twc_call_result
 twc_Collections_Entries(twc_state* Twitter,
                         twc_status_id Id,
-                        twc_collections_entriess_params Params)
+                        twc_collections_entries_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -250,7 +250,7 @@ twc_DirectMessages(twc_state* Twitter,
 
 extern twc_call_result
 twc_DirectMessages_Sent(twc_state* Twitter,
-                        twc_directmessages_sento_params Params)
+                        twc_directmessages_sent_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -318,7 +318,7 @@ twc_DirectMessages_Show(twc_state* Twitter,
 
 extern twc_call_result
 twc_Favorites_List(twc_state* Twitter,
-                   twc_favorites_listi_params Params)
+                   twc_favorites_list_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -420,7 +420,7 @@ twc_Followers_Ids(twc_state* Twitter,
 
 extern twc_call_result
 twc_Followers_List(twc_state* Twitter,
-                   twc_followers_listl_params Params)
+                   twc_followers_list_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -516,7 +516,7 @@ twc_Friends_Ids(twc_state* Twitter,
 
 extern twc_call_result
 twc_Friends_List(twc_state* Twitter,
-                 twc_friends_listx_params Params)
+                 twc_friends_list_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -684,7 +684,7 @@ twc_Friendships_Show(twc_state* Twitter,
 extern twc_call_result
 twc_Geo_Id_PlaceId(twc_state* Twitter,
                    twc_place_id PlaceId,
-                   twc_geo_id_placeidlb_params Params)
+                   twc_geo_id_placeid_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -706,7 +706,7 @@ extern twc_call_result
 twc_Geo_ReverseGeocode(twc_state* Twitter,
                        twc_string Lat,
                        twc_string Long,
-                       twc_geo_reversegeocodew_params Params)
+                       twc_geo_reversegeocode_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1384,7 +1384,7 @@ twc_Mutes_Users_Ids(twc_state* Twitter,
 
 extern twc_call_result
 twc_Mutes_Users_List(twc_state* Twitter,
-                     twc_mutes_users_liste_params Params)
+                     twc_mutes_users_list_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1411,7 +1411,7 @@ twc_Mutes_Users_List(twc_state* Twitter,
 extern twc_call_result
 twc_Projects(twc_state* Twitter,
              twc_string Auth,
-             twc_projectsm_params Params)
+             twc_projects_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1434,7 +1434,7 @@ twc_Projects(twc_state* Twitter,
 
 extern twc_call_result
 twc_SavedSearches_List(twc_state* Twitter,
-                       twc_savedsearches_listo_params Params)
+                       twc_savedsearches_list_params Params)
 {
     twc_key_value_list ParamList = NULL;
     return twc_MakeCall(Twitter, 0, TWC_URL_SAVEDSEARCHES_LIST, ParamList);
@@ -1443,7 +1443,7 @@ twc_SavedSearches_List(twc_state* Twitter,
 extern twc_call_result
 twc_SavedSearches_Show_Id(twc_state* Twitter,
                           const char* Id,
-                          twc_savedsearches_show_idt_params Params)
+                          twc_savedsearches_show_id_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1460,7 +1460,7 @@ twc_SavedSearches_Show_Id(twc_state* Twitter,
 extern twc_call_result
 twc_Search_Tweets(twc_state* Twitter,
                   twc_string Q,
-                  twc_search_tweetsx_params Params)
+                  twc_search_tweets_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1746,7 +1746,7 @@ twc_Statuses_Oembed(twc_state* Twitter,
 extern twc_call_result
 twc_Statuses_Retweeters_Ids(twc_state* Twitter,
                             twc_status_id Id,
-                            twc_statuses_retweeters_idsq_params Params)
+                            twc_statuses_retweeters_ids_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1776,7 +1776,7 @@ twc_Statuses_Retweeters_Ids(twc_state* Twitter,
 extern twc_call_result
 twc_Statuses_Retweets_Id(twc_state* Twitter,
                          twc_status_id Id,
-                         twc_statuses_retweets_idy_params Params)
+                         twc_statuses_retweets_id_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -1978,7 +1978,7 @@ twc_Statuses_UserTimeline(twc_state* Twitter,
 
 extern twc_call_result
 twc_Trends_Available(twc_state* Twitter,
-                     twc_trends_available__params Params)
+                     twc_trends_available_params Params)
 {
     twc_key_value_list ParamList = NULL;
     return twc_MakeCall(Twitter, 0, TWC_URL_TRENDS_AVAILABLE, ParamList);
@@ -2003,7 +2003,7 @@ twc_Trends_Closest(twc_state* Twitter,
 extern twc_call_result
 twc_Trends_Place(twc_state* Twitter,
                  twc_status_id Id,
-                 twc_trends_placea_params Params)
+                 twc_trends_place_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2026,7 +2026,7 @@ twc_Trends_Place(twc_state* Twitter,
 
 extern twc_call_result
 twc_Users_Lookup(twc_state* Twitter,
-                 twc_users_lookupm_params Params)
+                 twc_users_lookup_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2056,7 +2056,7 @@ twc_Users_Lookup(twc_state* Twitter,
 
 extern twc_call_result
 twc_Users_ProfileBanner(twc_state* Twitter,
-                        twc_users_profilebannerav_params Params)
+                        twc_users_profilebanner_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2081,7 +2081,7 @@ twc_Users_ProfileBanner(twc_state* Twitter,
 extern twc_call_result
 twc_Users_Search(twc_state* Twitter,
                  twc_string Q,
-                 twc_users_searchc_params Params)
+                 twc_users_search_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2118,7 +2118,7 @@ extern twc_call_result
 twc_Users_Show(twc_state* Twitter,
                twc_user_id UserId,
                twc_string ScreenName,
-               twc_users_shown_params Params)
+               twc_users_show_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2144,7 +2144,7 @@ twc_Users_Show(twc_state* Twitter,
 
 extern twc_call_result
 twc_Users_Suggestions(twc_state* Twitter,
-                      twc_users_suggestionst_params Params)
+                      twc_users_suggestions_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2182,7 +2182,7 @@ twc_Users_Suggestions_Slug(twc_state* Twitter,
 extern twc_call_result
 twc_Users_Suggestions_Slug_Members(twc_state* Twitter,
                                    twc_string Slug,
-                                   twc_users_suggestions_slug_membersu_params Params)
+                                   twc_users_suggestions_slug_members_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2259,7 +2259,7 @@ twc_Post_Account_Settings(twc_state* Twitter,
 
 extern twc_call_result
 twc_Account_UpdateProfile(twc_state* Twitter,
-                          twc_account_updateprofilea_params Params)
+                          twc_account_updateprofile_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2529,7 +2529,7 @@ extern twc_call_result
 twc_Collections_Entries_Add(twc_state* Twitter,
                             twc_status_id Id,
                             twc_status_id TweetId,
-                            twc_collections_entries_addm_params Params)
+                            twc_collections_entries_add_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2570,7 +2570,7 @@ twc_Collections_Entries_Add(twc_state* Twitter,
 
 extern twc_call_result
 twc_Collections_Entries_Curate(twc_state* Twitter,
-                               twc_collections_entries_curatea_params Params)
+                               twc_collections_entries_curate_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2715,7 +2715,7 @@ twc_DirectMessages_Destroy(twc_state* Twitter,
 extern twc_call_result
 twc_DirectMessages_New(twc_state* Twitter,
                        twc_string Text,
-                       twc_directmessages_newj_params Params)
+                       twc_directmessages_new_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2743,7 +2743,7 @@ twc_DirectMessages_New(twc_state* Twitter,
 extern twc_call_result
 twc_Favorites_Create(twc_state* Twitter,
                      twc_status_id Id,
-                     twc_favorites_creater_params Params)
+                     twc_favorites_create_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2790,7 +2790,7 @@ twc_Favorites_Destroy(twc_state* Twitter,
 
 extern twc_call_result
 twc_Friendships_Create(twc_state* Twitter,
-                       twc_friendships_createe_params Params)
+                       twc_friendships_create_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2820,7 +2820,7 @@ twc_Friendships_Create(twc_state* Twitter,
 
 extern twc_call_result
 twc_Friendships_Destroy(twc_state* Twitter,
-                        twc_friendships_destroym_params Params)
+                        twc_friendships_destroy_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2844,7 +2844,7 @@ twc_Friendships_Destroy(twc_state* Twitter,
 
 extern twc_call_result
 twc_Friendships_Update(twc_state* Twitter,
-                       twc_friendships_updatey_params Params)
+                       twc_friendships_update_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -2885,7 +2885,7 @@ twc_Geo_Place(twc_state* Twitter,
               twc_string Token,
               twc_string Lat,
               twc_string Long,
-              twc_geo_placez_params Params)
+              twc_geo_place_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3085,7 +3085,7 @@ twc_Lists_Members_CreateAll(twc_state* Twitter,
 
 extern twc_call_result
 twc_Lists_Members_Destroy(twc_state* Twitter,
-                          twc_lists_members_destroya_params Params)
+                          twc_lists_members_destroy_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3382,7 +3382,7 @@ twc_SavedSearches_Create(twc_state* Twitter,
 extern twc_call_result
 twc_SavedSearches_Destroy_Id(twc_state* Twitter,
                              const char* Id,
-                             twc_savedsearches_destroy_id__params Params)
+                             twc_savedsearches_destroy_id_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3426,7 +3426,7 @@ twc_Statuses_Destroy_Id(twc_state* Twitter,
 extern twc_call_result
 twc_Statuses_Retweet_Id(twc_state* Twitter,
                         twc_status_id Id,
-                        twc_statuses_retweet_idr_params Params)
+                        twc_statuses_retweet_id_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3453,7 +3453,7 @@ twc_Statuses_Retweet_Id(twc_state* Twitter,
 extern twc_call_result
 twc_Statuses_Unretweet_Id(twc_state* Twitter,
                           twc_status_id Id,
-                          twc_statuses_unretweet_idf_params Params)
+                          twc_statuses_unretweet_id_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3480,7 +3480,7 @@ twc_Statuses_Unretweet_Id(twc_state* Twitter,
 extern twc_call_result
 twc_Statuses_Update(twc_state* Twitter,
                     twc_string Status,
-                    twc_statuses_updatee_params Params)
+                    twc_statuses_update_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3548,7 +3548,7 @@ extern twc_call_result
 twc_Statuses_UpdateWithMedia(twc_state* Twitter,
                              twc_string Status,
                              twc_string Media,
-                             twc_statuses_updatewithmediam_params Params)
+                             twc_statuses_updatewithmedia_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
@@ -3605,7 +3605,7 @@ twc_Statuses_UpdateWithMedia(twc_state* Twitter,
 
 extern twc_call_result
 twc_Users_ReportSpam(twc_state* Twitter,
-                     twc_users_reportspamf_params Params)
+                     twc_users_reportspam_params Params)
 {
     twc_key_value_list ParamList = NULL;
 
