@@ -915,7 +915,7 @@ twc_Media_Upload(twc_state* State, twc_in char* Filename, twc_in twc_buffer File
 }
 
 extern twc_call_result
-twc_MakeCall(twc_state* State, twc_http_method Method, char* BaseURL, twc_key_value_list Params)
+twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc_key_value_list Params)
 {
     twc_call_result Result = {0};
     printf("\n\nTWITTER API CALL: %s\n", BaseURL);

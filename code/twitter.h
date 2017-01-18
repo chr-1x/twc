@@ -365,7 +365,7 @@ twc_Media_Upload(twc_state* Twitter, twc_in char* Filename, twc_in twc_buffer Fi
  */
 
 extern twc_call_result
-twc_MakeCall(twc_state* State, twc_http_method Method, char* BaseURL, twc_key_value_list Params);
+twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc_key_value_list Params);
 
 extern size_t
 twc_cURL_Callback(char* Data, size_t Data_ItemSize, size_t Data_NumItems, void* StatePtr);
