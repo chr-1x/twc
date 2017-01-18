@@ -5,19 +5,19 @@ LIBS= -lcurl
 
 all: dir build/linux64/libtwc.a
 
-build/linux64/libtwc.a: build/twitter.o
-	ar rcs $@ $?
+build/linux64/libtwc.a: dir build/twitter.o
+	ar rcs $@ build/twitter.o
 
-build/twitter.o: twc_codegen code/twitter.c code/twitter.h code/byte_utils.c api.json
+build/twitter.o: dir twc_codegen code/twitter.c code/twitter.h code/byte_utils.c api.json
 	./twc_codegen code/twitter.c api.json
 	cc $(COMPILE_FLAGS) -c code/twitter.c -o $@
 
 twc_codegen: build/codegen.o build/json.o
 	cc $(LINK_FLAGS) $^ $(LIBS) -o $@
 
-build/codegen.o: code/codegen.c code/tokenizer.c code/twitter.h code/json.h
+build/codegen.o: dir code/codegen.c code/tokenizer.c code/twitter.h code/json.h
 	cc $(COMPILE_FLAGS) -c code/codegen.c -o $@
-build/json.o: code/json.c code/json.h
+build/json.o: dir code/json.c code/json.h
 	cc $(COMPILE_FLAGS) -c code/json.c -o $@
 
 dir:

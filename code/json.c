@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <malloc.h> // for alloca // TODO is there another way to do the JSON array parsing?
+#ifdef __GNUC__
+#include <alloc.h> // alloca on GCC
+#endif
 #include "json.h"
 
 #ifndef JSON_MALLOC
@@ -143,7 +146,6 @@ json_String(const char* CString)
     while (C && *(++C) != '\0');
     return json_StringEx(CString, C - CString);
 }
-
 
 JSON_INLINE bool
 json_StringsEqual(json_string A, json_string B)

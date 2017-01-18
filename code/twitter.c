@@ -8,8 +8,10 @@
 #include <stdio.h> // For snprintf
 #include <string.h> // For memcpy
 #include <stdlib.h>
-#include <malloc.h> // For alloca (GCC, MSVC)
-#include <alloca.h> // For alloca (standard)
+#include <malloc.h> // For alloca (MSVC)
+#ifdef __GNUC__
+#include <alloc.h> // alloca on GCC
+#endif
 #include <assert.h>
 #include <time.h>   // For time(), needed for generating timestamps for OAuth
 #include <curl/curl.h>
