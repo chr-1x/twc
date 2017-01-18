@@ -918,7 +918,6 @@ extern twc_call_result
 twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc_key_value_list Params)
 {
     twc_call_result Result = {0};
-    printf("\n\nTWITTER API CALL: %s\n", BaseURL);
 
     if (Method == TWC_HTTP_GET)
     {
@@ -937,12 +936,9 @@ twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc
             ParamBuf.Ptr = FullURL + BaseLen + 1;
             twc_KeyValueList_ToString(Params, "=", "&", false, true, ParamBuf);
 
-            printf("FULL URL: %s\n", FullURL);
-
             curl_easy_setopt(State->cURL, CURLOPT_URL, FullURL);
         }
         else {
-            printf("FULL URL: %s\n", BaseURL);
             curl_easy_setopt(State->cURL, CURLOPT_URL, BaseURL);
         }
         curl_easy_setopt(State->cURL, CURLOPT_HTTPGET, 1);
