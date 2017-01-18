@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <malloc.h> // for alloca // TODO is there another way to do the JSON array parsing?
-#ifdef __GNUC__
-#include <alloc.h> // alloca on GCC
+#ifndef _MSC_VER
+#include <alloca.h> // alloca on non-MSVC
 #endif
 #include "json.h"
 
