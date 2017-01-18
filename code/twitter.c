@@ -1,10 +1,17 @@
+/* twitter.c
+ *  by Andrew 'ChronalDragon' Chronister
+ *
+ * Implementations of all the functions defined in twitter.h
+ * Includes SHA1 hashing and URL encoding utilities.
+ */
+
 #include <stdio.h> // For snprintf
 #include <string.h> // For memcpy
 #include <stdlib.h>
 #include <malloc.h> // For alloca (GCC, MSVC)
 #include <alloca.h> // For alloca (standard)
 #include <assert.h>
-#include <time.h>
+#include <time.h>   // For time(), needed for generating timestamps for OAuth
 #include <curl/curl.h>
 #include "twitter.h"
 
