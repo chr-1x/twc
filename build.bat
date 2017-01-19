@@ -7,7 +7,7 @@ echo ====================
 echo.
 
 set DEFINES= 
-set CCFLAGS= /MT %DEFINES% /Gm- /WX /W4 /wd4201 /wd4100 /wd4189 /wd4505 /wd4706 /wd4996 /wd4127 /wd4244 /wd4200 /wd4204
+set CCFLAGS= /MT %DEFINES% /Gm- /W4 /wd4201 /wd4100 /wd4189 /wd4505 /wd4706 /wd4996 /wd4127 /wd4244 /wd4200 /wd4204
 set LIBS= libcurl.lib 
 
 IF NOT EXIST build mkdir build
@@ -24,7 +24,9 @@ lib /nologo twitter.obj /out:win64/libtwc.lib
 :: IF NOT EXIST win32 mkdir win32
 :: lib /nologo twitter.obj /out:win32/libtwc.lib
 
-xcopy /Y ..\code\twitter_api.h ..\code\twitter.h ..\code\types.h ..\include
+xcopy /Y ..\code\twitter_api.h ..\include
+xcopy /Y ..\code\twitter.h ..\include
+xcopy /Y  ..\code\types.h ..\include
 xcopy /Y win64\libtwc.lib ..\lib\win64\libtwc.lib
 
 popd
