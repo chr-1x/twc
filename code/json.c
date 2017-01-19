@@ -584,7 +584,13 @@ ParseObject(tokenizer* Tokenizer)
             {
                 json_pair* Pair = ParsePair(Tokenizer, First == NULL);
                 if (Pair == NULL) {
-                    First = (json_pair*)0xDEADBEEF;
+                    // Just got to set it to something non-NULL. It won't be
+                    // dereferenced, since the allocation above was presumably
+                    // also NULL, but we need it to pass the First == NULL check
+                    // below. 
+                    // TODO(chronister): What if the allocation above was not
+                    // NULL? (E.g. ran out of mem between that and ParsePair)
+                    First = (json_pair*)0xDEADBEEFul;
                     continue;
                 }
                 DIE_IF_ERROR(Tokenizer, Result);
