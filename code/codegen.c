@@ -239,7 +239,7 @@ twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
         Result.Size += strlen(twc_HttpMethodString[Method.Value]) + 1;
     }
     Result.Ptr = calloc(1, Result.Size);
-    int DestIndex = 0;
+    size_t DestIndex = 0;
     memcpy(Result.Ptr, "twc_", DestIndex += strlen("twc_"));
     if (Method.Exists) {
         const char* MethodStr = twc_HttpMethodString[Method.Value];
@@ -272,7 +272,7 @@ twc_strbuf FunctionNameFromPath(twc_string Path, twc_http_method$ Method)
         Result.Size += strlen(twc_HttpMethodString[Method.Value]) + 1;
     }
     Result.Ptr = calloc(1, Result.Size);
-    int DestIndex = 0;
+    size_t DestIndex = 0;
     memcpy(Result.Ptr, "twc_", DestIndex += strlen("twc_"));
     if (Method.Exists) {
         const char* MethodStr = twc_HttpMethodString[Method.Value];
@@ -362,7 +362,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
         fprintf(stderr, "Please provide a valid filename for the api schema JSON\n");
         return false;
     }
-    json_result Parsed = json_Parse(APIFile, strlen(APIFile));
+    json_result Parsed = json_Parse(APIFile, (int)strlen(APIFile));
 
     if (Parsed.Error.Id == ERROR_NONE) 
     {
@@ -418,7 +418,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
                 }
 
                 json_array ParamsArray = LookupArr(EndpointData, "params");
-                Endpoint.ParamCount = ParamsArray.Length;
+                Endpoint.ParamCount = (int)ParamsArray.Length;
                 Endpoint.Params = calloc(ParamsArray.Length, sizeof(api_parameter));
 
                 for (uint p = 0; p < ParamsArray.Length; ++p) 

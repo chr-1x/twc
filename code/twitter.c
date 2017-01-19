@@ -638,7 +638,7 @@ twc_KeyValueList_ToString(twc_in twc_key_value_list Params,
         else 
         {
             strncpy(Strbuf.Ptr + TotalSize, Param->Key.Ptr, ClampAmount((int)Param->Key.Size, (int)Strbuf.Size - TotalSize));
-            TotalSize += Param->Key.Size;
+            TotalSize += (int)Param->Key.Size;
         }
 
         strncpy(Strbuf.Ptr + TotalSize, KeyValueSeparator, ClampAmount(KeyValueSepLen, (int)Strbuf.Size - TotalSize));
@@ -658,7 +658,7 @@ twc_KeyValueList_ToString(twc_in twc_key_value_list Params,
         else 
         {
             strncpy(Strbuf.Ptr + TotalSize, Param->Value.Ptr, ClampAmount((int)Param->Value.Size, (int)Strbuf.Size - TotalSize));
-            TotalSize += Param->Value.Size;
+            TotalSize += (int)Param->Value.Size;
         }
 
         if (QuoteValue) {
