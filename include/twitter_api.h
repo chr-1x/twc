@@ -3,11 +3,11 @@ Returns settings (including current trend, geo and sleep time information) for t
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_get_account_settingsr_params;
+} twc_get_account_settings_params;
 
 extern twc_call_result
 twc_Get_Account_Settings(twc_state* Twitter,
-                         twc_get_account_settingsr_params Params);
+                         twc_get_account_settings_params Params);
 
 /* account/verify_credentials:
 Returns an HTTP 200 OK response code and a representation of the requesting user if authentication was successful; returns a 401 status code and an error message if not. Use this method to test if supplied user credentials are valid. */
@@ -21,11 +21,11 @@ returned user object. */
 If the user does not have an email address on their account, or if the email
 address is not verified, null will be returned. */
     bool$ IncludeEmail;
-} twc_account_verifycredentialse_params;
+} twc_account_verifycredentials_params;
 
 extern twc_call_result
 twc_Account_VerifyCredentials(twc_state* Twitter,
-                              twc_account_verifycredentialse_params Params);
+                              twc_account_verifycredentials_params Params);
 
 /* application/rate_limit_status:
 Returns the current rate limits for methods belonging to the specified resource families. Each API resource belongs to a "resource family" which is indicated in its method documentation. The method's resource family can be determined from the first component of the path after the resource version. This method responds with a map of methods belonging to the families specified by the resources parameter, the current remaining uses for each of those resources within the current rate limiting window, and their expiration time in epoch time . It also includes a rate_limit_context field that indicates the current access token or application-only authentication context. You may also issue requests to this method without any parameters to receive a map of all rate limited GET methods. If your application only uses a few of methods, you should explicitly provide a resources parameter with the specified resource families you work with. When using application-only auth, this method's response indicates the application-only auth rate limiting context. Read more about API Rate Limiting and review the limits . */
@@ -35,11 +35,11 @@ limit disposition for. For best performance, only specify the resource families
 pertinent to your application. See API Rate
 Limiting for more information. */
     twc_string$ Resources;
-} twc_application_ratelimitstatusn_params;
+} twc_application_ratelimitstatus_params;
 
 extern twc_call_result
 twc_Application_RateLimitStatus(twc_state* Twitter,
-                                twc_application_ratelimitstatusn_params Params);
+                                twc_application_ratelimitstatus_params Params);
 
 /* blocks/ids:
 Returns an array of numeric user ids the authenticating user is blocking. Important This method is cursored, meaning your app must make multiple requests in order to receive all blocks correctly. See Using cursors to navigate collections for more details on how cursoring works. */
@@ -56,11 +56,11 @@ The response from the API will include a previous_cursor and next_cursor
 to allow paging back and forth. See Using cursors to navigate
 collections for more information. */
     const char* Cursor;
-} twc_blocks_idsx_params;
+} twc_blocks_ids_params;
 
 extern twc_call_result
 twc_Blocks_Ids(twc_state* Twitter,
-               twc_blocks_idsx_params Params);
+               twc_blocks_ids_params Params);
 
 /* blocks/list:
 Returns a collection of user objects that the authenticating user is blocking. Important This method is cursored, meaning your app must make multiple requests in order to receive all blocks correctly. See Using cursors to navigate collections for more details on how cursoring works. */
@@ -78,11 +78,11 @@ The response from the API will include a previous_cursor and next_cursor
 to allow paging back and forth. See Using cursors to navigate
 collections for more information. */
     const char* Cursor;
-} twc_blocks_listdd_params;
+} twc_blocks_list_params;
 
 extern twc_call_result
 twc_Blocks_List(twc_state* Twitter,
-                twc_blocks_listdd_params Params);
+                twc_blocks_list_params Params);
 
 /* collections/entries:
 Retrieve the identified Collection, presented as a list of the Tweets curated within. The response structure of this method differs significantly from timelines you may be used to working with in the Twitter REST API. To navigate a Collection, use the position object of a response, which includes attributes for max_position , min_position , and was_truncated . was_truncated indicates whether additional Tweets exist in the collection outside of the range of the current request. To retrieve Tweets further back in time, use the value of min_position found in the current response as the
@@ -97,12 +97,12 @@ position. */
     twc_status_id$ MaxPosition;
     /* Returns results with a position greater than the specified position. */
     twc_status_id$ MinPosition;
-} twc_collections_entriess_params;
+} twc_collections_entries_params;
 
 extern twc_call_result
 twc_Collections_Entries(twc_state* Twitter,
                         twc_status_id Id,
-                        twc_collections_entriess_params Params);
+                        twc_collections_entries_params Params);
 
 /* collections/list:
 Find Collections created by a specific user or containing a specific curated Tweet. Results are organized in a cursored collection. */
@@ -181,11 +181,11 @@ specified ID. */
     int$ Page;
     /* The entities node will not be included when set to false . */
     bool$ IncludeEntities;
-} twc_directmessages_sento_params;
+} twc_directmessages_sent_params;
 
 extern twc_call_result
 twc_DirectMessages_Sent(twc_state* Twitter,
-                        twc_directmessages_sento_params Params);
+                        twc_directmessages_sent_params Params);
 
 /* direct_messages/show:
 Returns a single direct message, specified by an id parameter. Like the /1.1/direct_messages.format request, this method will include the user objects of the sender and recipient. Important : This method requires an access token with RWD (read, write & direct message) permissions. Consult The Application Permission Model for more information. */
@@ -221,11 +221,11 @@ specified ID. */
     twc_status_id$ MaxId;
     /* The entities node will be omitted when set to false . */
     bool$ IncludeEntities;
-} twc_favorites_listi_params;
+} twc_favorites_list_params;
 
 extern twc_call_result
 twc_Favorites_List(twc_state* Twitter,
-                   twc_favorites_listi_params Params);
+                   twc_favorites_list_params Params);
 
 /* followers/ids:
 Returns a cursored collection of user IDs for every user following the specified user. At this time, results are ordered with the most recent following first u2014 however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 5,000 user IDs and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for
@@ -281,11 +281,11 @@ returned user objects. If set to any other value, statuses will be included. */
     bool$ SkipStatus;
     /* The user object entities node will not be included when set to false . */
     bool$ IncludeUserEntities;
-} twc_followers_listl_params;
+} twc_followers_list_params;
 
 extern twc_call_result
 twc_Followers_List(twc_state* Twitter,
-                   twc_followers_listl_params Params);
+                   twc_followers_list_params Params);
 
 /* friends/ids:
 Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their "friends"). At this time, results are ordered with the most recent following first u2014 however, this ordering is subject to unannounced change and eventual consistency issues. Results are given in groups of 5,000 user IDs and multiple "pages" of results can be navigated through using the next_cursor value in subsequent requests. See Using cursors to navigate collections for
@@ -341,11 +341,11 @@ returned user objects. */
     bool$ SkipStatus;
     /* The user object entities node will not be included when set to false. */
     bool$ IncludeUserEntities;
-} twc_friends_listx_params;
+} twc_friends_list_params;
 
 extern twc_call_result
 twc_Friends_List(twc_state* Twitter,
-                 twc_friends_listx_params Params);
+                 twc_friends_list_params Params);
 
 /* friendships/incoming:
 Returns a collection of numeric IDs for every user who has a pending request to follow the authenticating user. */
@@ -439,12 +439,12 @@ Returns all the information about a known place . */
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_geo_id_placeidlb_params;
+} twc_geo_id_placeid_params;
 
 extern twc_call_result
 twc_Geo_Id_PlaceId(twc_state* Twitter,
                    twc_place_id PlaceId,
-                   twc_geo_id_placeidlb_params Params);
+                   twc_geo_id_placeid_params Params);
 
 /* geo/reverse_geocode:
 Given a latitude and a longitude, searches for up to 20 places that can be used as a place_id when updating a status. This request is an informative call and will deliver generalized results about geography. */
@@ -469,13 +469,13 @@ intend to display to the user here. */
     /* If supplied, the response will use the JSONP format with a callback of the given
 name. */
     twc_string$ Callback;
-} twc_geo_reversegeocodew_params;
+} twc_geo_reversegeocode_params;
 
 extern twc_call_result
 twc_Geo_ReverseGeocode(twc_state* Twitter,
                        twc_string Lat,
                        twc_string Long,
-                       twc_geo_reversegeocodew_params Params);
+                       twc_geo_reversegeocode_params Params);
 
 /* geo/search:
 Search for places that can be attached to a statuses/update. Given a latitude and a longitude pair, an IP address, or a name, this request will return a list of all the valid places that can be used as the place_id when updating a status. Conceptually, a query can be made from the user's location, retrieve a list of places, have the user validate the location he or she is at, and then send the ID of this location with a call to POST statuses/update . This is the recommended method to use find places that can be attached to statuses/update. Unlike GET geo/reverse_geocode which provides raw data access, this endpoint can potentially re-order places with regards to the user who is authenticated. This approach is also preferred for interactive place matching with the user. Some parameters in this method are only required based on the existence of other parameters. For instance, "lat" is required if "long" is provided, and vice-versa. Authentication is recommended, but not required with this method. */
@@ -867,11 +867,11 @@ navigate collections"] for more information. */
     /* When set to either true , t or 1 statuses will not be included in the
 returned user objects. */
     bool$ SkipStatus;
-} twc_mutes_users_liste_params;
+} twc_mutes_users_list_params;
 
 extern twc_call_result
 twc_Mutes_Users_List(twc_state* Twitter,
-                     twc_mutes_users_liste_params Params);
+                     twc_mutes_users_list_params Params);
 
 /* projects:
 This endpoint requires special permission to access and is only available for TV broadcast use cases. To request access please visit curator.twitter.com . Returns a list of existing projects available to the user. */
@@ -881,35 +881,35 @@ typedef twc_param_struct {
     /* The output format request. This param can be either json or xml . It will
 default to json . */
     twc_string$ Format;
-} twc_projectsm_params;
+} twc_projects_params;
 
 extern twc_call_result
 twc_Projects(twc_state* Twitter,
              twc_string Auth,
-             twc_projectsm_params Params);
+             twc_projects_params Params);
 
 /* saved_searches/list:
 Returns the authenticated user's saved search queries. */
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_savedsearches_listo_params;
+} twc_savedsearches_list_params;
 
 extern twc_call_result
 twc_SavedSearches_List(twc_state* Twitter,
-                       twc_savedsearches_listo_params Params);
+                       twc_savedsearches_list_params Params);
 
 /* saved_searches/show/:id:
 Retrieve the information for the saved search represented by the given id. The authenticating user must be the owner of saved search ID being requested. */
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_savedsearches_show_idt_params;
+} twc_savedsearches_show_id_params;
 
 extern twc_call_result
 twc_SavedSearches_Show_Id(twc_state* Twitter,
                           const char* Id,
-                          twc_savedsearches_show_idt_params Params);
+                          twc_savedsearches_show_id_params Params);
 
 /* search/tweets:
 Returns a collection of relevant Tweets matching a specified query. Please note that Twitter's search service and, by extension, the Search API is not meant to be an exhaustive source of Tweets. Not all Tweets will be indexed or made available via the search interface. In API v1.1, the response format of the Search API has been improved to return Tweet objects more similar to the objects you'll find across the REST API and platform. However, perspectival attributes (fields that pertain to the perspective of the authenticating user) are not currently supported on this endpoint. To learn how to use Twitter Search effectively, consult our guide to Using the Twitter Search API . See Working with Timelines to learn best practices for navigating results by since_id and max_id . */
@@ -955,12 +955,12 @@ specified ID. */
     twc_status_id$ MaxId;
     /* The entities node will not be included when set to false. */
     bool$ IncludeEntities;
-} twc_search_tweetsx_params;
+} twc_search_tweets_params;
 
 extern twc_call_result
 twc_Search_Tweets(twc_state* Twitter,
                   twc_string Q,
-                  twc_search_tweetsx_params Params);
+                  twc_search_tweets_params Params);
 
 /* statuses/home_timeline:
 Returns a collection of the most recent Tweets and retweets posted by the authenticating user and the users they follow. The home timeline is central to how most users interact with the Twitter service. Up to 800 Tweets are obtainable on the home timeline. It is more volatile for users that follow many users or follow users who Tweet frequently. See Working with Timelines for instructions on traversing timelines efficiently. */
@@ -1113,12 +1113,12 @@ method will not provide segmented cursors for use with this parameter. */
     /* Many programming environments will not consume Tweet ids due to their size.
 Provide this option to have ids returned as strings instead. */
     bool$ StringifyIds;
-} twc_statuses_retweeters_idsq_params;
+} twc_statuses_retweeters_ids_params;
 
 extern twc_call_result
 twc_Statuses_Retweeters_Ids(twc_state* Twitter,
                             twc_status_id Id,
-                            twc_statuses_retweeters_idsq_params Params);
+                            twc_statuses_retweeters_ids_params Params);
 
 /* statuses/retweets/:id:
 Returns a collection of the 100 most recent retweets of the Tweet specified by the id parameter. */
@@ -1129,12 +1129,12 @@ typedef twc_param_struct {
 include a user object including only the status authors numerical ID. Omit this
 parameter to receive the complete user object. */
     bool$ TrimUser;
-} twc_statuses_retweets_idy_params;
+} twc_statuses_retweets_id_params;
 
 extern twc_call_result
 twc_Statuses_Retweets_Id(twc_state* Twitter,
                          twc_status_id Id,
-                         twc_statuses_retweets_idy_params Params);
+                         twc_statuses_retweets_id_params Params);
 
 /* statuses/retweets_of_me:
 Returns the most recent Tweets authored by the authenticating user that have been retweeted by others. This timeline is a subset of the user's GET statuses / user_timeline . See Working with Timelines for instructions on traversing timelines. */
@@ -1239,11 +1239,11 @@ Returns the locations that Twitter has trending topic information for. The respo
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_trends_available__params;
+} twc_trends_available_params;
 
 extern twc_call_result
 twc_Trends_Available(twc_state* Twitter,
-                     twc_trends_available__params Params);
+                     twc_trends_available_params Params);
 
 /* trends/closest:
 Returns the locations that Twitter has trending topic information for, closest to a specified location. The response is an array of "locations" that encode the location's WOEID and some other human-readable information such as a canonical name and country the location belongs in. A WOEID is a Yahoo! Where On Earth ID . */
@@ -1263,12 +1263,12 @@ Returns the top 10 trending topics for a specific WOEID , if trending informatio
 typedef twc_param_struct {
     /* Setting this equal to hashtags will remove all hashtags from the trends list. */
     twc_string$ Exclude;
-} twc_trends_placea_params;
+} twc_trends_place_params;
 
 extern twc_call_result
 twc_Trends_Place(twc_state* Twitter,
                  twc_status_id Id,
-                 twc_trends_placea_params Params);
+                 twc_trends_place_params Params);
 
 /* users/lookup:
 Returns fully-hydrated user objects for up to 100 users per request, as specified by comma-separated values passed to the user_id and/or screen_name parameters. This method is especially useful when used in conjunction with collections of user IDs returned from GET friends / ids and GET followers / ids . GET users / show is used to retrieve a single user object. There are a few things to note when using this method. */
@@ -1283,11 +1283,11 @@ You are strongly encouraged to use a POST for larger requests. */
     /* The entities node that may appear within embedded statuses will not be
 included when set to false. */
     bool$ IncludeEntities;
-} twc_users_lookupm_params;
+} twc_users_lookup_params;
 
 extern twc_call_result
 twc_Users_Lookup(twc_state* Twitter,
-                 twc_users_lookupm_params Params);
+                 twc_users_lookup_params Params);
 
 /* users/profile_banner:
 Returns a map of the available size variations of the specified user's profile banner. If the user has not uploaded a profile banner, a HTTP 404 will be served instead. This method can be used instead of string manipulation on the profile_banner_url returned in user objects as described in Profile Images and Banners . The profile banner data available at each size variant's URL is in PNG format. */
@@ -1298,11 +1298,11 @@ valid user ID is also a valid screen name. */
     /* The screen name of the user for whom to return results. Helpful for
 disambiguating when a valid screen name is also a user ID. */
     twc_string$ ScreenName;
-} twc_users_profilebannerav_params;
+} twc_users_profilebanner_params;
 
 extern twc_call_result
 twc_Users_ProfileBanner(twc_state* Twitter,
-                        twc_users_profilebannerav_params Params);
+                        twc_users_profilebanner_params Params);
 
 /* users/search:
 Provides a simple, relevance-based search interface to public user accounts on Twitter. Try querying by topical interest, full name, company name, location, or other criteria. Exact match searches are not supported. Only the first 1,000 matching results are available. */
@@ -1315,25 +1315,25 @@ maximum of 20. */
     /* The entities node will not be included in embedded Tweet objects when set to
 false . */
     bool$ IncludeEntities;
-} twc_users_searchc_params;
+} twc_users_search_params;
 
 extern twc_call_result
 twc_Users_Search(twc_state* Twitter,
                  twc_string Q,
-                 twc_users_searchc_params Params);
+                 twc_users_search_params Params);
 
 /* users/show:
 Returns a variety of information about the user specified by the required user_id or screen_name parameter. The author's most recent Tweet will be returned inline when possible. GET users / lookup is used to retrieve a bulk collection of user objects. You must be following a protected user to be able to see their most recent Tweet. If you don't follow a protected user, the user's Tweet will be removed. A Tweet will not always be returned in the current_status field. */
 typedef twc_param_struct {
     /* The entities node will not be included when set to false. */
     bool$ IncludeEntities;
-} twc_users_shown_params;
+} twc_users_show_params;
 
 extern twc_call_result
 twc_Users_Show(twc_state* Twitter,
                twc_user_id UserId,
                twc_string ScreenName,
-               twc_users_shown_params Params);
+               twc_users_show_params Params);
 
 /* users/suggestions:
 Access to Twitter's suggested user list. This returns the list of suggested user categories. The category can be used in GET users / suggestions / :slug to get the users in that category. */
@@ -1346,11 +1346,11 @@ language codes will receive English (en) results. If you use lang in this
 request, ensure you also include it when requesting the GET users / suggestions
 / :slug list. */
     twc_string$ Lang;
-} twc_users_suggestionst_params;
+} twc_users_suggestions_params;
 
 extern twc_call_result
 twc_Users_Suggestions(twc_state* Twitter,
-                      twc_users_suggestionst_params Params);
+                      twc_users_suggestions_params Params);
 
 /* users/suggestions/:slug:
 Access the users in a given category of the Twitter suggested user list. It is recommended that applications cache this data for no more than one hour. */
@@ -1375,12 +1375,12 @@ Access the users in a given category of the Twitter suggested user list and retu
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_users_suggestions_slug_membersu_params;
+} twc_users_suggestions_slug_members_params;
 
 extern twc_call_result
 twc_Users_Suggestions_Slug_Members(twc_state* Twitter,
                                    twc_string Slug,
-                                   twc_users_suggestions_slug_membersu_params Params);
+                                   twc_users_suggestions_slug_members_params Params);
 
 /* account/remove_profile_banner:
 Removes the uploaded profile banner for the authenticating user. Returns HTTP 200 upon success. */
@@ -1455,11 +1455,11 @@ update_profile_colors API method. */
     /* When set to either true , t or 1 statuses will not be included in the
 returned user objects. */
     twc_string$ SkipStatus;
-} twc_account_updateprofilea_params;
+} twc_account_updateprofile_params;
 
 extern twc_call_result
 twc_Account_UpdateProfile(twc_state* Twitter,
-                          twc_account_updateprofilea_params Params);
+                          twc_account_updateprofile_params Params);
 
 /* account/update_profile_background_image:
 Updates the authenticating user's profile background image. This method can also be used to enable or disable the profile background image. Although each parameter is marked as optional, at least one of image or media_id must be provided when making this request. */
@@ -1606,24 +1606,24 @@ curation_reverse_chron ordered collection. */
     /* Set to false to insert the specified tweet_id below the relative_to
 Tweet in the collection. Default: true */
     bool$ Above;
-} twc_collections_entries_addm_params;
+} twc_collections_entries_add_params;
 
 extern twc_call_result
 twc_Collections_Entries_Add(twc_state* Twitter,
                             twc_status_id Id,
                             twc_status_id TweetId,
-                            twc_collections_entries_addm_params Params);
+                            twc_collections_entries_add_params Params);
 
 /* collections/entries/curate:
 Curate a Collection by adding or removing Tweets in bulk. Updates must be limited to 100 cumulative additions or removals per request. Use POST collections / entries / add and POST collections / entries / remove to add or remove a single Tweet. */
 typedef twc_param_struct {
     /* Description */
     twc_string$ Name;
-} twc_collections_entries_curatea_params;
+} twc_collections_entries_curate_params;
 
 extern twc_call_result
 twc_Collections_Entries_Curate(twc_state* Twitter,
-                               twc_collections_entries_curatea_params Params);
+                               twc_collections_entries_curate_params Params);
 
 /* collections/entries/move:
 Move a specified Tweet to a new position in a curation_reverse_chron ordered collection. */
@@ -1690,24 +1690,24 @@ disambiguating when a valid user ID is also a valid screen name. */
     /* The screen name of the user who should receive the direct message. Helpful for
 disambiguating when a valid screen name is also a user ID. */
     twc_string$ ScreenName;
-} twc_directmessages_newj_params;
+} twc_directmessages_new_params;
 
 extern twc_call_result
 twc_DirectMessages_New(twc_state* Twitter,
                        twc_string Text,
-                       twc_directmessages_newj_params Params);
+                       twc_directmessages_new_params Params);
 
 /* favorites/create:
 Favorites the status specified in the ID parameter as the authenticating user. Returns the favorite status when successful. This process invoked by this method is asynchronous. The immediately returned status may not indicate the resultant favorited status of the tweet. A 200 OK response from this method will indicate whether the intended action was successful or not. */
 typedef twc_param_struct {
     /* The entities node will be omitted when set to false . */
     bool$ IncludeEntities;
-} twc_favorites_creater_params;
+} twc_favorites_create_params;
 
 extern twc_call_result
 twc_Favorites_Create(twc_state* Twitter,
                      twc_status_id Id,
-                     twc_favorites_creater_params Params);
+                     twc_favorites_create_params Params);
 
 /* favorites/destroy:
 Un-favorites the status specified in the ID parameter as the authenticating user. Returns the un-favorited status in the requested format when successful. This process invoked by this method is asynchronous. The immediately returned status may not indicate the resultant favorited status of the tweet. A 200 OK response from this method will indicate whether the intended action was successful or not. */
@@ -1730,11 +1730,11 @@ typedef twc_param_struct {
     twc_user_id$ UserId;
     /* Enable notifications for the target user. */
     bool$ Follow;
-} twc_friendships_createe_params;
+} twc_friendships_create_params;
 
 extern twc_call_result
 twc_Friendships_Create(twc_state* Twitter,
-                       twc_friendships_createe_params Params);
+                       twc_friendships_create_params Params);
 
 /* friendships/destroy:
 Allows the authenticating user to unfollow the user specified in the ID parameter. Returns the unfollowed user in the requested format when successful. Returns a string describing the failure condition when unsuccessful. Actions taken in this method are asynchronous and changes will be eventually consistent. */
@@ -1743,11 +1743,11 @@ typedef twc_param_struct {
     twc_string$ ScreenName;
     /* The ID of the user for whom to unfollow. */
     twc_user_id$ UserId;
-} twc_friendships_destroym_params;
+} twc_friendships_destroy_params;
 
 extern twc_call_result
 twc_Friendships_Destroy(twc_state* Twitter,
-                        twc_friendships_destroym_params Params);
+                        twc_friendships_destroy_params Params);
 
 /* friendships/update:
 Allows one to enable or disable retweets and device notifications from the specified user. */
@@ -1760,11 +1760,11 @@ typedef twc_param_struct {
     twc_string$ Device;
     /* Enable/disable retweets from the target user. */
     twc_string$ Retweets;
-} twc_friendships_updatey_params;
+} twc_friendships_update_params;
 
 extern twc_call_result
 twc_Friendships_Update(twc_state* Twitter,
-                       twc_friendships_updatey_params Params);
+                       twc_friendships_update_params Params);
 
 /* geo/place:
 As of December 2nd, 2013, this endpoint is deprecated and retired and no longer functions. Place creation was used infrequently by third party applications and is generally no longer supported on Twitter. Requests will return with status 410 (Gone) with error code 251 . Created a new place object at the given latitude and longitude. Before creating a place you needed to query GET geo/similar_places with the latitude, longitude and name of the place you wished to create. The query will return an array of places which are similar to the one you wish to create, and a token . If the place you wished to create wasn't in the returned array you could use the token with this method to
@@ -1777,7 +1777,7 @@ attributes are also permitted. Learn more here . */
     /* If supplied, the response will use the JSONP format with a callback of the given
 name. */
     twc_string$ Callback;
-} twc_geo_placez_params;
+} twc_geo_place_params;
 
 extern twc_call_result
 twc_Geo_Place(twc_state* Twitter,
@@ -1786,7 +1786,7 @@ twc_Geo_Place(twc_state* Twitter,
               twc_string Token,
               twc_string Lat,
               twc_string Long,
-              twc_geo_placez_params Params);
+              twc_geo_place_params Params);
 
 /* lists/create:
 Creates a new list for the authenticated user. Note that you can create up to 1000 lists per account. */
@@ -1874,11 +1874,11 @@ disambiguating when a valid screen name is also a user ID. */
     twc_string$ OwnerScreenName;
     /* The user ID of the user who owns the list being requested by a slug . */
     twc_status_id$ OwnerId;
-} twc_lists_members_destroya_params;
+} twc_lists_members_destroy_params;
 
 extern twc_call_result
 twc_Lists_Members_Destroy(twc_state* Twitter,
-                          twc_lists_members_destroya_params Params);
+                          twc_lists_members_destroy_params Params);
 
 /* lists/members/destroy_all:
 Removes multiple members from a list, by specifying a comma-separated list of member ids or screen names. The authenticated user must own the list to be able to remove members from it. Note that lists can't have more than 500 members, and you are limited to removing up to 100 members to a list at a time with this method. Please note that there can be issues with lists that rapidly remove and add memberships. Take care when using these methods such that you are not too rapidly switching between removals and adds on the same list. */
@@ -1999,12 +1999,12 @@ Destroys a saved search for the authenticating user. The authenticating user mus
 typedef twc_param_struct {
     // No parameters documented as of generation
     void* Reserved;
-} twc_savedsearches_destroy_id__params;
+} twc_savedsearches_destroy_id_params;
 
 extern twc_call_result
 twc_SavedSearches_Destroy_Id(twc_state* Twitter,
                              const char* Id,
-                             twc_savedsearches_destroy_id__params Params);
+                             twc_savedsearches_destroy_id_params Params);
 
 /* statuses/destroy/:id:
 Destroys the status specified by the required ID parameter. The authenticating user must be the author of the specified status. Returns the destroyed status if successful. */
@@ -2027,12 +2027,12 @@ typedef twc_param_struct {
 include a user object including only the status authors numerical ID. Omit this
 parameter to receive the complete user object. */
     bool$ TrimUser;
-} twc_statuses_retweet_idr_params;
+} twc_statuses_retweet_id_params;
 
 extern twc_call_result
 twc_Statuses_Retweet_Id(twc_state* Twitter,
                         twc_status_id Id,
-                        twc_statuses_retweet_idr_params Params);
+                        twc_statuses_retweet_id_params Params);
 
 /* statuses/unretweet/:id:
 Untweets a retweeted status. Returns the original
@@ -2043,12 +2043,12 @@ typedef twc_param_struct {
 include a user object including only the status authors numerical ID. Omit this
 parameter to receive the complete user object. */
     bool$ TrimUser;
-} twc_statuses_unretweet_idf_params;
+} twc_statuses_unretweet_id_params;
 
 extern twc_call_result
 twc_Statuses_Unretweet_Id(twc_state* Twitter,
                           twc_status_id Id,
-                          twc_statuses_unretweet_idf_params Params);
+                          twc_statuses_unretweet_id_params Params);
 
 /* statuses/update:
 Updates the authenticating user's current status, also known as Tweeting. For each update attempt, the update text is compared with the authenticating user's recent Tweets. Any attempt that would result in duplication will be blocked, resulting in a 403 error. A user cannot submit the same status twice in a row. While not rate limited by the API, a user is limited in the number of Tweets they can create at a time. If the number of updates posted by the user reaches the current allowed limit this method will return an HTTP 403 error. About Geo */
@@ -2087,12 +2087,12 @@ parameter to receive the complete user object. */
 photos or 1 animated GIF or 1 video in a Tweet. See Uploading Media
 for further details on uploading media. */
     const char* MediaIds;
-} twc_statuses_updatee_params;
+} twc_statuses_update_params;
 
 extern twc_call_result
 twc_Statuses_Update(twc_state* Twitter,
                     twc_string Status,
-                    twc_statuses_updatee_params Params);
+                    twc_statuses_update_params Params);
 
 /* statuses/update_with_media:
 This endpoint has been DEPRECATED and does not support multiple images, animated GIFs, or video. Follow the `Uploading media guide <rest/media/uploading-media>`__ to upload one or more media entities, and then use `POST statuses/update </rest/reference/post/statuses/update>`__ to attach them to a Tweet. Updates the authenticating user's current status and attaches media for upload. In other words, it creates a Tweet with a picture attached. Unlike POST statuses/update , this method expects raw multipart data. Your POST request's Content-Type should be set to multipart/form-data with the media[] parameter. The Tweet text will be rewritten to include the media URL(s), which will reduce the number of characters allowed in the Tweet text. If the URL(s) cannot be appended without text truncation, the tweet will be rejected and this method will return an HTTP 403 error. Users are limited to a specific daily media upload limit. Requests to this endpoint will return the following headers with information regarding the user's current media upload limits: If the user is over the daily media limit, this method will return an HTTP 403 error. In addition to media upload limits, the user is still limited in the number of statuses they can publish daily. If the user tries to exceed the number of updates allowed, this method will also return an HTTP 403 error, similar to POST statuses/update . OAuth is handled differently for POST messages. See Uploading Media for more details on this. */
@@ -2120,13 +2120,13 @@ retrieved from geo/reverse_geocode. */
     twc_place_id$ PlaceId;
     /* Whether or not to put a pin on the exact coordinates a tweet has been sent from. */
     bool$ DisplayCoordinates;
-} twc_statuses_updatewithmediam_params;
+} twc_statuses_updatewithmedia_params;
 
 extern twc_call_result
 twc_Statuses_UpdateWithMedia(twc_state* Twitter,
                              twc_string Status,
                              twc_string Media,
-                             twc_statuses_updatewithmediam_params Params);
+                             twc_statuses_updatewithmedia_params Params);
 
 /* users/report_spam:
 Report the specified user as a spam account to Twitter. Additionally performs the equivalent of POST blocks / create on behalf of the authenticated user. */
@@ -2137,9 +2137,9 @@ disambiguating when a valid screen name is also a user ID. */
     /* The ID of the user you want to report as a spammer. Helpful for disambiguating
 when a valid user ID is also a valid screen name. */
     twc_user_id$ UserId;
-} twc_users_reportspamf_params;
+} twc_users_reportspam_params;
 
 extern twc_call_result
 twc_Users_ReportSpam(twc_state* Twitter,
-                     twc_users_reportspamf_params Params);
+                     twc_users_reportspam_params Params);
 
