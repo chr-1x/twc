@@ -590,7 +590,7 @@ ParseObject(tokenizer* Tokenizer)
                     // below. 
                     // TODO(chronister): What if the allocation above was not
                     // NULL? (E.g. ran out of mem between that and ParsePair)
-                    First = (json_pair*)0xDEADBEEFul;
+                    First = (json_pair*)0xDEADBEEFull;
                     continue;
                 }
                 DIE_IF_ERROR(Tokenizer, Result);
