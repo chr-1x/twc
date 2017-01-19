@@ -24,8 +24,8 @@ lib /nologo twitter.obj /out:win64/libtwc.lib
 :: IF NOT EXIST win32 mkdir win32
 :: lib /nologo twitter.obj /out:win32/libtwc.lib
 
-cp ../code/twitter_api.h ../code/twitter.h ../code/types.h ../include
-cp win64/libtwc.lib ../lib/win64/libtwc.lib
+xcopy ..\code\twitter_api.h ..\code\twitter.h ..\code\types.h ..\include
+xcopy win64\libtwc.lib ..\lib\win64\libtwc.lib
 
 popd
 
