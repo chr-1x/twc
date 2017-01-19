@@ -72,7 +72,6 @@
 // The only thing we depend on: cURL, for all our API call needs.
 #include <curl/curl.h>
 
-// Ruh roh
 #include <string.h>
 
 // NOTE: The generated twitter API functions are included in §2.2
@@ -228,6 +227,7 @@ typedef twc_option_t(twc_http_method) twc_http_method$;
 // Defined in twitter.c
 extern const char* twc_HttpMethodString[3];
 
+// For your reference (for now)
 typedef enum 
 {
     TWC_API_Error_Cant_Authenticate         = 32,
@@ -279,7 +279,11 @@ typedef struct
  *    \_     /     2) TWC API Functions
  *  -<__,--''  ----================================================================================--------
  * 
- * The meat of the API. The functions are split into TODO
+ * The meat of the API. The functions are split into logistics (dealing with
+ * library constructs), Twitter API calls (included in from twitter_api.h),
+ * and utility functions (used for building or modifying library constructs,
+ * or calling helper procs that the library uses itself internally).
+ *
  * 
  *     2.1) TWC Logistics
  * ----==============================--------
@@ -291,17 +295,36 @@ typedef struct
 /* twc_Init:
  *   Initializes the twc_state structure using the provided parameters. Should be done before any other API
  *   calls are made.
- * @State: The state structure to initialize. Assume that this function will touch every member of the
+ * @Twitter: The state structure to initialize. Assume that this function will touch every member of the
  *   structure (even if simply to zero it out).
- * TODO */
+ * @Keys: A set of four OAuth keys (Token Key/Secret, Consumer Key/Secret) to
+ *   use when making twitter API calls.
+ */
 extern void
 twc_Init(twc_state* State, twc_oauth_keys Keys);
 
+/* twc_InitEx:
+ *   Like twc_Init, but more options to pick from. 
+ * @Twitter: The state structure to initialize. Assume that this function will touch every member of the
+ *   structure (even if simply to zero it out).
+ * @Keys: A set of four OAuth keys (Token Key/Secret, Consumer Key/Secret) to
+ *   use when making twitter API calls.
+ * @ErrorBuf: A buffer of at least ErrorBufSize characters of memory to store
+ *   cURL error messages in.
+ * @Alloc: Function the lib can use to allocate memory (mainly for buffering in
+ *   data from cURL)
+ * @Free: Function the lib should use to free memory allocated with the above.
+ */
 extern void
-twc_InitEx(twc_state* State, twc_oauth_keys Keys,
+twc_InitEx(twc_state* Twitter, twc_oauth_keys Keys,
            char* ErrorBuf, size_t ErrorBufSize,
            twc_malloc_func Alloc, twc_free_func Free);
 
+/* twc_Close:
+ *   Clean up resources initialized with twc_Init or twc_InitEx. May call the
+ *   Free function passed in earlier.
+ * @Twitter: The state structure initialized earlier with twc_Init.
+ */
 extern void
 twc_Close(twc_state* Twitter);
 
@@ -310,15 +333,24 @@ twc_Close(twc_state* Twitter);
  * ----==============================--------
  * 
  * Functions that map directly to twitter API calls.
- * TODO
  */
 
 #ifndef TWC_CODEGEN_FIRST_PASS
 #include "twitter_api.h"
 #endif
 
+/* twc_Media_Upload:
+ *   Temporarily included here so that your code can create tweets with media
+ *   attachments. Full media API coming...eventually.
+ * @Twitter: library state structure.
+ * @Filename: Name of a file to upload to twitter. Only used if FileContents are
+ *   not given.
+ * @FileContents: An arbitrary length blob of data. Takes precedence over
+ *   Filename if both are given. Note that Twitter places an upper bound on file
+ *   sizes. 
+ */
 extern twc_call_result
-twc_Media_Upload(twc_state* State, twc_in char* Filename, twc_in twc_buffer FileContents);
+twc_Media_Upload(twc_state* Twitter, twc_in char* Filename, twc_in twc_buffer FileContents);
 
 /*
  *     2.3) Utility
@@ -333,7 +365,7 @@ twc_Media_Upload(twc_state* State, twc_in char* Filename, twc_in twc_buffer File
  */
 
 extern twc_call_result
-twc_MakeCall(twc_state* State, twc_http_method Method, char* BaseURL, twc_key_value_list Params);
+twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc_key_value_list Params);
 
 extern size_t
 twc_cURL_Callback(char* Data, size_t Data_ItemSize, size_t Data_NumItems, void* StatePtr);
