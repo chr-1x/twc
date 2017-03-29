@@ -543,6 +543,11 @@ static json_pair*
 ParsePair(tokenizer* Tokenizer, bool First)
 {
     json_pair* Result = PushStruct(&Tokenizer->TreeArena, json_pair);
+    if (Result != NULL) {
+        memset(Result, 0, sizeof(json_pair));
+        Result->Type = JSON_PAIR;
+    }
+
     if (!First) {
         if (!RequireToken(Tokenizer, Token_Comma))
         {
