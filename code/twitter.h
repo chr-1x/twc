@@ -70,8 +70,6 @@
 // The only thing we depend on: cURL, for all our API call needs.
 #include <curl/curl.h>
 
-#include <string.h>
-
 // NOTE: The generated twitter API functions are included in §2.2
 
 /*
@@ -405,8 +403,9 @@ twc_DeserializeStatusId(const char* Buf, int BufSize);
 twc_inline twc_string
 twc_ToString(const char* CString) { 
     twc_string Result;
-    Result.Size = strlen(CString);
     Result.Ptr = CString;
+    Result.Size = 0;
+    if (CString != NULL) while (*(CString++)) Result.Size++;
     return Result;
 }
 

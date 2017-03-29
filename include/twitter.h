@@ -70,8 +70,6 @@
 // The only thing we depend on: cURL, for all our API call needs.
 #include <curl/curl.h>
 
-#include <string.h>
-
 // NOTE: The generated twitter API functions are included in §2.2
 
 /*
@@ -262,8 +260,6 @@ typedef enum
     TWC_API_Error_Timestamp_Unacceptable    = 135,
     TWC_API_Error_Blocked                   = 136,
     TWC_API_Error_Cant_Follow               = 161,
-    TWC_API_Error_Not_Authorized            = 179,
-    TWC_API_Error_Over_Post_Limit           = 185,
     TWC_API_Error_Duplicate_Status          = 187,
     TWC_API_Error_Bad_Authentication        = 215,
     TWC_API_Error_Automated_Request         = 226,
@@ -405,8 +401,9 @@ twc_DeserializeStatusId(const char* Buf, int BufSize);
 twc_inline twc_string
 twc_ToString(const char* CString) { 
     twc_string Result;
-    Result.Size = strlen(CString);
     Result.Ptr = CString;
+    Result.Size = 0;
+    if (CString != NULL) while (*(CString++)) Result.Size++;
     return Result;
 }
 
