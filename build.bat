@@ -26,7 +26,6 @@ lib /nologo twitter.obj /out:win64/libtwc.lib
 
 xcopy /Y ..\code\twitter_api.h ..\include
 xcopy /Y ..\code\twitter.h ..\include
-xcopy /Y  ..\code\types.h ..\include
 xcopy /Y win64\libtwc.lib ..\lib\win64\libtwc.lib
 
 popd

@@ -1,5 +1,5 @@
 /* twitter.c
- *  by Andrew 'ChronalDragon' Chronister
+ *  by Andrew Chronister
  *
  * Implementations of all the functions defined in twitter.h
  * Includes SHA1 hashing and URL encoding utilities.
@@ -16,8 +16,6 @@
 #include <time.h>   // For time(), needed for generating timestamps for OAuth
 #include <curl/curl.h>
 #include "twitter.h"
-
-#include "byte_utils.c"
 
 #define twc_malloc(n) State->MemAllocFunc(n)
 #define twc_free(m) State->MemFreeFunc(m)
@@ -84,9 +82,12 @@ twc_SerializeLatLong(double LatLong, char Buf[30])
 }
 #endif
 
-//TODO(chronister): Put the 13 in a #define and figure out what size it needs to be
+// Max-length int, in decimal, is
+// 11 characters long (including -)
+#define INT_BUF (11 + 1)
+
 bool
-twc_SerializeInt(int Val, char Buf[13])
+twc_SerializeInt(int Val, char Buf[INT_BUF])
 {
     return snprintf(Buf, 13, "%d", Val) > 0;
 }
@@ -108,6 +109,53 @@ twc_CStringAlphaCompare(const char* A, const char* B)
     return 0;
 }
 #endif
+
+#if _MSC_VER
+#include "intrin.h"
+#endif
+
+inline u32
+RotateLeft(u32 Value, s32 Amount)
+{
+#if _MSC_VER
+	u32 Result = _rotl(Value, Amount);
+#else
+	Amount &= 31;
+	u32 Result = ((Value << Amount) | Value >> (32 - Amount));
+#endif
+
+	return Result;
+}
+
+inline u32 
+SwapByteOrder(u32 A)
+{
+#if _MSC_VER
+        return _byteswap_ulong(A);
+#else
+        return ((A & 0xFF000000) >> 24) |
+               ((A & 0x00FF0000) >> 8) |
+               ((A & 0x0000FF00) << 8) |
+               ((A & 0x000000FF) << 24);
+#endif
+}
+
+inline u64 
+SwapByteOrder64(u64 A)
+{
+#if _MSC_VER
+        return _byteswap_uint64(A);
+#else
+        return ((A & 0xFF00000000000000) >> 56) |
+               ((A & 0x00FF000000000000) >> 40) |
+               ((A & 0x0000FF0000000000) >> 24) |
+               ((A & 0x000000FF00000000) >> 8) |
+               ((A & 0x00000000FF000000) << 8) |
+               ((A & 0x0000000000FF0000) << 24) |
+               ((A & 0x000000000000FF00) << 40) |
+               ((A & 0x00000000000000FF) << 56);
+#endif
+}
 
 // Bits into bytes
 #define BITS(bits) (bits/8)
@@ -234,6 +282,8 @@ twc_URLEncode(const char* SourceString, const u64 SourceLength, char* DestBuffer
 //   This shouldn't be used for anything which actually has sensitive information.
 // Second, this implementation has not been thoroughly tested for its own security. 
 //   Use at your own discretion.
+// The only reason twitter uses it, I assume, is for verification that no bits
+//   have changed in transfer.
 twc_message_digest_sha1
 twc_Hash_SHA1(twc_in u8* Bytes, twc_in u64 LengthInBytes)
 {
@@ -516,7 +566,6 @@ twc_InitEx(twc_state* State, twc_oauth_keys Keys,
 extern void
 twc_Init(twc_state* State, twc_oauth_keys Keys)
 {
-    // TODO what should this use if you don't want to use the CRT
     twc_InitEx(State, Keys, (char*)malloc(1024), 1024, malloc, free);
 }
 
@@ -725,8 +774,6 @@ twc_GenerateOAuthSignature(twc_in twc_http_method ReqType, twc_in char* BareURL,
     strncpy(SigContent + BaseLen, EncodedURL, EncodedURLLen);
     strncpy(SigContent + BaseLen + EncodedURLLen, "&", 1);
     strncpy(SigContent + BaseLen + EncodedURLLen + 1, EncodedParams, EncodedParamsLen);
-
-    //printf("SIG CONTENT: \n%.*s\n", SigContentLen, SigContent);
 
     int ConsumerSecretLen = (int)strlen(ConsumerSecret);
     int TokenSecretLen = (int)strlen(TokenSecret);
@@ -1055,7 +1102,7 @@ twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc
 #define TWC_CODEGEN_TEMPLATES 0
 #if TWC_CODEGEN_TEMPLATES
 
-twc_param_serialization(bool$) 
+twc_param_serialization(bool_o) 
 { 
     twc_key_value_pair @FieldName@_KV; 
     if (@ParamName@.Exists) {
@@ -1064,7 +1111,7 @@ twc_param_serialization(bool$)
     }
 }
 
-twc_param_serialization(int$)
+twc_param_serialization(int_o)
 {
     twc_key_value_pair @FieldName@_KV;
     if (@ParamName@.Exists) {
@@ -1101,7 +1148,7 @@ twc_param_serialization(twc_string)
     ParamList = twc_KeyValueList_InsertSorted(ParamList, &@FieldName@_KV);
 }
 
-twc_param_serialization(twc_string$)
+twc_param_serialization(twc_string_o)
 {
     twc_key_value_pair @FieldName@_KV;
     if (@ParamName@.Exists) {
@@ -1110,7 +1157,7 @@ twc_param_serialization(twc_string$)
     }
 }
 
-twc_param_serialization(twc_geo_coordinate$)
+twc_param_serialization(twc_geo_coordinate_o)
 {
     twc_key_value_pair LatParam;
     twc_key_value_pair LongParam;
@@ -1166,7 +1213,7 @@ twc_param_serialization(twc_place_id)
     }
 }
 
-twc_param_serialization(twc_status_id$)
+twc_param_serialization(twc_status_id_o)
 {
     twc_key_value_pair @FieldName@_KV;
     if (@ParamName@.Exists) {
@@ -1179,7 +1226,7 @@ twc_param_serialization(twc_status_id$)
 }
 
 
-twc_param_serialization(twc_cursor_id$)
+twc_param_serialization(twc_cursor_id_o)
 {
     twc_key_value_pair @FieldName@_KV;
     if (@ParamName@.Exists) {
@@ -1192,7 +1239,7 @@ twc_param_serialization(twc_cursor_id$)
     }
 }
 
-twc_param_serialization(twc_user_id$)
+twc_param_serialization(twc_user_id_o)
 {
     twc_key_value_pair @FieldName@_KV;
     if (@ParamName@.Exists) {
@@ -1205,7 +1252,7 @@ twc_param_serialization(twc_user_id$)
     }
 }
 
-twc_param_serialization(twc_place_id$)
+twc_param_serialization(twc_place_id_o)
 {
     twc_key_value_pair @FieldName@_KV;
     if (@ParamName@.Exists) {

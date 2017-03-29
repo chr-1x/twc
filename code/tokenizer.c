@@ -55,7 +55,7 @@ typedef struct
 {
     token_type Type;
     const char* Begin;
-    twc_string$ Text;
+    twc_string_o Text;
 } token;
 
 bool CharIsAlpha(char C) { return ('a' <= C && C <= 'z') || ('A' <= C && C <= 'Z'); }

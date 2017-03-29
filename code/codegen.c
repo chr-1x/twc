@@ -31,7 +31,7 @@ typedef struct
     twc_string Name;
     twc_string Type;
     twc_string Desc;
-    twc_string$ Example;
+    twc_string_o Example;
     bool Required;
 
     twc_string FieldName;
@@ -40,7 +40,7 @@ typedef struct
 typedef struct
 {
     twc_string Path;
-    twc_string$ PathParamName;
+    twc_string_o PathParamName;
 
     twc_string Desc;
 
@@ -231,7 +231,7 @@ twc_strbuf ToPascalCase(twc_string Identifier)
     return Result;
 }
 
-twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
+twc_strbuf StructNameFromPath(twc_string Path, twc_http_method_o Method)
 {
     twc_strbuf Result = {0};
     Result.Size = Path.Size + strlen("twc_") + strlen("_params"); // Upper bound
@@ -264,7 +264,7 @@ twc_strbuf StructNameFromPath(twc_string Path, twc_http_method$ Method)
     return Result;
 }
 
-twc_strbuf FunctionNameFromPath(twc_string Path, twc_http_method$ Method)
+twc_strbuf FunctionNameFromPath(twc_string Path, twc_http_method_o Method)
 {
     twc_strbuf Result = {0};
     Result.Size = Path.Size + strlen("twc_"); // Upper bound
@@ -318,35 +318,35 @@ const char* TranslateType(twc_string SchemaType, bool Required)
 {
     if (twc_StringCompare(SchemaType, twc_ToString("bool")) == 0) {
         if (Required) { return "bool"; }
-        else { return "bool$"; }
+        else { return "bool_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("string")) == 0) {
         if (Required) { return "twc_string"; }
-        else { return "twc_string$"; }
+        else { return "twc_string_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("int")) == 0) {
         if (Required) { return "int"; }
-        else { return "int$"; }
+        else { return "int_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("binary")) == 0) {
         if (Required) { return "twc_buffer"; }
-        else { return "twc_buffer$"; }
+        else { return "twc_buffer_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("status_id")) == 0) {
         if (Required) { return "twc_status_id"; }
-        else { return "twc_status_id$"; }
+        else { return "twc_status_id_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("user_id")) == 0) {
         if (Required) { return "twc_user_id"; }
-        else { return "twc_user_id$"; }
+        else { return "twc_user_id_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("cursor_id")) == 0) {
         if (Required) { return "twc_cursor_id"; }
-        else { return "twc_cursor_id$"; }
+        else { return "twc_cursor_id_o"; }
     }
     if (twc_StringCompare(SchemaType, twc_ToString("place_id")) == 0) {
         if (Required) { return "twc_place_id"; }
-        else { return "twc_place_id$"; }
+        else { return "twc_place_id_o"; }
     }
     // Unsupported, just let the user fill it out as they see fit
     return "const char*";
@@ -387,7 +387,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
                 char* PathParamStart = (memchr(Endpoint.Path.Ptr, ':', Endpoint.Path.Size));
                 if (PathParamStart == NULL) 
                 {
-                    Endpoint.PathParamName = TWC_NONE(twc_string$);
+                    Endpoint.PathParamName = TWC_NONE(twc_string_o);
                 }
                 else 
                 {
@@ -401,7 +401,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
                     else {
                         ParamName.Size = PathParamEnd - ParamName.Ptr;
                     }
-                    Endpoint.PathParamName = TWC_SOME(ParamName, twc_string$);
+                    Endpoint.PathParamName = TWC_SOME(ParamName, twc_string_o);
                     //printf("Endpoint %.*s has path param %.*s\n", TSTRf(Endpoint.Path), TSTRf(ParamName));
                 }
 
@@ -433,11 +433,11 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
 
                     if (Lookup(ParamData, "example") != NULL) 
                     {
-                        Endpoint.Params[p].Example = TWC_SOME(LookupStr(ParamData, "example"), twc_string$);
+                        Endpoint.Params[p].Example = TWC_SOME(LookupStr(ParamData, "example"), twc_string_o);
                     }
                     else 
                     {
-                        Endpoint.Params[p].Example = TWC_NONE(twc_string$);
+                        Endpoint.Params[p].Example = TWC_NONE(twc_string_o);
                     }
                 }
                 (*Endpoints)[(*EndpointCount)++] = Endpoint;
@@ -461,7 +461,7 @@ bool ParseAPISchema(char* APISchemaFileName, twc_out api_endpoint** Endpoints, t
 
 void GenerateEndpointParams(FILE* OutFile, api_endpoint* Endpoint)
 {
-    twc_strbuf StructName = StructNameFromPath(Endpoint->Path, TWC_OPTION(!Endpoint->Unique, Endpoint->Method, twc_http_method$));
+    twc_strbuf StructName = StructNameFromPath(Endpoint->Path, TWC_OPTION(!Endpoint->Unique, Endpoint->Method, twc_http_method_o));
 
     fprintf(OutFile, "/* %.*s:\n%.*s */\n", TSTRf(Endpoint->Path), TSTRf(Endpoint->Desc));
     fprintf(OutFile, "typedef twc_param_struct {\n");
@@ -497,9 +497,9 @@ void GenerateEndpointParams(FILE* OutFile, api_endpoint* Endpoint)
 void GenerateEndpointDeclaration(FILE* OutFile, api_endpoint* Endpoint)
 {
     twc_strbuf StructName = StructNameFromPath(Endpoint->Path, 
-                                               TWC_OPTION(!Endpoint->Unique, Endpoint->Method, twc_http_method$));
+                                               TWC_OPTION(!Endpoint->Unique, Endpoint->Method, twc_http_method_o));
     twc_strbuf FuncName = FunctionNameFromPath(Endpoint->Path,
-                                               TWC_OPTION(!Endpoint->Unique, Endpoint->Method, twc_http_method$));
+                                               TWC_OPTION(!Endpoint->Unique, Endpoint->Method, twc_http_method_o));
 
     fprintf(OutFile, "extern twc_call_result\n");
     fprintf(OutFile, "%.*s(twc_state* Twitter,\n", TSTRf(FuncName));

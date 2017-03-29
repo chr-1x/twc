@@ -67,8 +67,6 @@
  * ----==============================--------
  */
 
-// TODO(chronister): Collapse this in?
-#include "types.h"
 // The only thing we depend on: cURL, for all our API call needs.
 #include <curl/curl.h>
 
@@ -119,6 +117,29 @@ extern "C" {
  *  `<__,--''  ----================================================================================--------
  */
 
+/*     2.0) Simple data types
+ * ----==============================--------
+ * 
+ * Standard ints, bool, uint, and countof.
+ */
+#include <inttypes.h>
+#include <stdbool.h>
+#include <stddef.h>
+
+typedef int8_t s8;
+typedef int16_t s16;
+typedef int32_t s32;
+typedef int64_t s64;
+
+typedef uint8_t u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+
+typedef unsigned int uint;
+
+#define countof(Array) (sizeof(Array) / sizeof((Array)[0]))
+
 /*
  *     2.1) Generic data types
  * ----==============================--------
@@ -134,12 +155,12 @@ typedef twc_buffer_t(const char) twc_string;
 
 #define twc_option_t(T) struct { bool Exists; T Value; }
 
-typedef twc_option_t(bool) bool$;
-typedef twc_option_t(int) int$;
-typedef twc_option_t(float) float$;
-typedef twc_option_t(double) double$;
-typedef twc_option_t(u64) u64$;
-typedef twc_option_t(twc_string) twc_string$;
+typedef twc_option_t(bool) bool_o;
+typedef twc_option_t(int) int_o;
+typedef twc_option_t(float) float_o;
+typedef twc_option_t(double) double_o;
+typedef twc_option_t(u64) u64_o;
+typedef twc_option_t(twc_string) twc_string_o;
 
 #define TWC_NONE(T) (T){ .Exists = false }
 #define TWC_SOME(expr, T) (T){ .Exists = true, .Value = expr}
@@ -163,23 +184,22 @@ typedef union
 } twc_color;
 
 typedef u64 twc_status_id;
-typedef u64$ twc_status_id$;
+typedef u64_o twc_status_id_o;
 
 typedef u64 twc_user_id;
-typedef u64$ twc_user_id$;
+typedef u64_o twc_user_id_o;
 
 typedef u64 twc_cursor_id;
-typedef u64$ twc_cursor_id$;
+typedef u64_o twc_cursor_id_o;
 
-// Note: unlike the previous three types of ID, place IDs are dealt with by the Twitter API as hexadecimal strings.
 typedef u64 twc_place_id;
-typedef u64$ twc_place_id$;
+typedef u64_o twc_place_id_o;
 
 typedef struct {
     double Latitude;
     double Longitude;
 } twc_geo_coordinate;
-typedef twc_option_t(twc_geo_coordinate) twc_geo_coordinate$;
+typedef twc_option_t(twc_geo_coordinate) twc_geo_coordinate_o;
 
 typedef struct twc_key_value_pair
 {
@@ -222,7 +242,7 @@ typedef enum
     TWC_HTTP_POST,
     TWC_HTTP_DELETE,
 } twc_http_method;
-typedef twc_option_t(twc_http_method) twc_http_method$;
+typedef twc_option_t(twc_http_method) twc_http_method_o;
 
 // Defined in twitter.c
 extern const char* twc_HttpMethodString[3];
