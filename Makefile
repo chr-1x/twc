@@ -8,7 +8,7 @@ all: dir build/linux64/libtwc.a
 build/linux64/libtwc.a: dir build/twitter.o
 	ar rcs $@ build/twitter.o
 
-build/twitter.o: dir twc_codegen code/twitter.c code/twitter.h code/byte_utils.c api.json
+build/twitter.o: dir twc_codegen code/twitter.c code/twitter.h api.json
 	./twc_codegen code/twitter.c api.json
 	cc $(COMPILE_FLAGS) -c code/twitter.c -o $@
 

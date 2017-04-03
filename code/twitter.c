@@ -114,7 +114,7 @@ twc_CStringAlphaCompare(const char* A, const char* B)
 #include "intrin.h"
 #endif
 
-inline u32
+static inline u32
 RotateLeft(u32 Value, s32 Amount)
 {
 #if _MSC_VER
@@ -127,7 +127,7 @@ RotateLeft(u32 Value, s32 Amount)
 	return Result;
 }
 
-inline u32 
+static inline u32 
 SwapByteOrder(u32 A)
 {
 #if _MSC_VER
@@ -140,7 +140,7 @@ SwapByteOrder(u32 A)
 #endif
 }
 
-inline u64 
+static inline u64 
 SwapByteOrder64(u64 A)
 {
 #if _MSC_VER
