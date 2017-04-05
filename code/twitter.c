@@ -786,7 +786,7 @@ twc_GenerateOAuthSignature(twc_in twc_http_method ReqType, twc_in char* BareURL,
     twc_message_digest_sha1 SigDigest = twc_MessageAuthenticationCode_SHA1((u8*)SigningKey, SigningKeyLen, (u8*)SigContent, SigContentLen);
 
     int SigBase64Len = twc_Base64EncodedLength(sizeof(SigDigest));
-    char* SigBase64 = malloc(SigBase64Len); // Temporary
+    char* SigBase64 = alloca(SigBase64Len); // Temporary
     twc_Base64Encode(SigDigest.Bytes, sizeof(SigDigest), SigBase64, SigBase64Len);
 
     int SignatureLen = twc_URLEncodedLength(SigBase64, SigBase64Len);
@@ -838,7 +838,7 @@ twc_GenerateOAuthHeader(twc_in twc_http_method ReqType, twc_in char* BaseURL, tw
     AllParams = twc_KeyValueList_InsertSorted(AllParams, &OAuthVersionKeyValue);
 
     int SignatureLen = twc_OAuthSignatureMaxLength();
-    char* Signature = malloc(SignatureLen + 1);
+    char* Signature = alloca(SignatureLen + 1);
     memset(Signature, '\0', SignatureLen + 1);
     twc_GenerateOAuthSignature(ReqType, BaseURL, AllParams, Keys.ConsumerSecret, Keys.TokenSecret, Signature);
 
@@ -1032,7 +1032,11 @@ twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc
         curl_easy_setopt(State->cURL, CURLOPT_HTTPHEADER, OAuthHeaderList);
     }
 
-    if (curl_easy_perform(State->cURL) == CURLE_OK)
+    bool PerformSuccess = curl_easy_perform(State->cURL) == CURLE_OK;
+
+    curl_slist_free_all(OAuthHeaderList);
+
+    if (PerformSuccess)
     {
         // Transfer complete, write function should be done writing
         twc_buffer Data = twc_ConsumeData(State);
