@@ -20,10 +20,6 @@
 #define twc_malloc(n) State->MemAllocFunc(n)
 #define twc_free(m) State->MemFreeFunc(m)
 
-// Even though it's declared inline in the header, GCC (and others?) may need an
-// extern declaration so they know in which TU to put the generated code.
-extern twc_string twc_ToString(const char* CString);
-
 const char* twc_HttpMethodString[3] = {
     "GET",
     "POST",
@@ -819,7 +815,7 @@ twc_GenerateOAuthHeader(twc_in twc_http_method ReqType, twc_in char* BaseURL, tw
 
     char Timestamp[22]; // Enough to hold a 64-bit number in base 10
     memset(Timestamp, '\0', sizeof(Timestamp));
-    snprintf(Timestamp, 22, "%"PRIu64, time(NULL));
+    snprintf(Timestamp, 22, "%"PRIu64, (uint64_t)time(NULL));
 
     twc_key_value_list AllParams = ParamsSorted;
 
