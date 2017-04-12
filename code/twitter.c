@@ -941,7 +941,12 @@ twc_Media_Upload(twc_state* State, twc_in char* Filename, twc_in twc_buffer File
         curl_easy_setopt(State->cURL, CURLOPT_HTTPHEADER, OAuthHeaderList);
     }
 
-    if (curl_easy_perform(State->cURL) == CURLE_OK)
+    bool PerformSuccess = curl_easy_perform(State->cURL) == CURLE_OK;
+
+    curl_formfree(FormPost);
+    curl_slist_free_all(OAuthHeaderList);
+
+    if (PerformSuccess)
     {
         // Transfer complete, write function should be done writing
         twc_buffer Data = twc_ConsumeData(State);
