@@ -20,9 +20,11 @@
 #include "json.h"
 
 #ifdef _WIN32
-#define DEBUG_BREAK __debugbreak()
+    #define DEBUG_BREAK __debugbreak()
+#elif defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+    #define DEBUG_BREAK __asm("int3")
 #else
-#define DEBUG_BREAK __asm("int3")
+    #define DEBUG_BREAK __builtin_trap()
 #endif
 
 // Twitter API endpoint descriptions

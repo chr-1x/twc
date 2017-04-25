@@ -20,10 +20,6 @@
 #define twc_malloc(n) State->MemAllocFunc(n)
 #define twc_free(m) State->MemFreeFunc(m)
 
-// Even though it's declared inline in the header, GCC (and others?) may need an
-// extern declaration so they know in which TU to put the generated code.
-extern twc_string twc_ToString(const char* CString);
-
 const char* twc_HttpMethodString[3] = {
     "GET",
     "POST",
@@ -786,7 +782,7 @@ twc_GenerateOAuthSignature(twc_in twc_http_method ReqType, twc_in char* BareURL,
     twc_message_digest_sha1 SigDigest = twc_MessageAuthenticationCode_SHA1((u8*)SigningKey, SigningKeyLen, (u8*)SigContent, SigContentLen);
 
     int SigBase64Len = twc_Base64EncodedLength(sizeof(SigDigest));
-    char* SigBase64 = malloc(SigBase64Len); // Temporary
+    char* SigBase64 = alloca(SigBase64Len); // Temporary
     twc_Base64Encode(SigDigest.Bytes, sizeof(SigDigest), SigBase64, SigBase64Len);
 
     int SignatureLen = twc_URLEncodedLength(SigBase64, SigBase64Len);
@@ -819,7 +815,7 @@ twc_GenerateOAuthHeader(twc_in twc_http_method ReqType, twc_in char* BaseURL, tw
 
     char Timestamp[22]; // Enough to hold a 64-bit number in base 10
     memset(Timestamp, '\0', sizeof(Timestamp));
-    snprintf(Timestamp, 22, "%"PRIu64, time(NULL));
+    snprintf(Timestamp, 22, "%"PRIu64, (uint64_t)time(NULL));
 
     twc_key_value_list AllParams = ParamsSorted;
 
@@ -838,7 +834,7 @@ twc_GenerateOAuthHeader(twc_in twc_http_method ReqType, twc_in char* BaseURL, tw
     AllParams = twc_KeyValueList_InsertSorted(AllParams, &OAuthVersionKeyValue);
 
     int SignatureLen = twc_OAuthSignatureMaxLength();
-    char* Signature = malloc(SignatureLen + 1);
+    char* Signature = alloca(SignatureLen + 1);
     memset(Signature, '\0', SignatureLen + 1);
     twc_GenerateOAuthSignature(ReqType, BaseURL, AllParams, Keys.ConsumerSecret, Keys.TokenSecret, Signature);
 
@@ -945,7 +941,12 @@ twc_Media_Upload(twc_state* State, twc_in char* Filename, twc_in twc_buffer File
         curl_easy_setopt(State->cURL, CURLOPT_HTTPHEADER, OAuthHeaderList);
     }
 
-    if (curl_easy_perform(State->cURL) == CURLE_OK)
+    bool PerformSuccess = curl_easy_perform(State->cURL) == CURLE_OK;
+
+    curl_formfree(FormPost);
+    curl_slist_free_all(OAuthHeaderList);
+
+    if (PerformSuccess)
     {
         // Transfer complete, write function should be done writing
         twc_buffer Data = twc_ConsumeData(State);
@@ -1032,7 +1033,11 @@ twc_MakeCall(twc_state* State, twc_http_method Method, twc_in char* BaseURL, twc
         curl_easy_setopt(State->cURL, CURLOPT_HTTPHEADER, OAuthHeaderList);
     }
 
-    if (curl_easy_perform(State->cURL) == CURLE_OK)
+    bool PerformSuccess = curl_easy_perform(State->cURL) == CURLE_OK;
+
+    curl_slist_free_all(OAuthHeaderList);
+
+    if (PerformSuccess)
     {
         // Transfer complete, write function should be done writing
         twc_buffer Data = twc_ConsumeData(State);

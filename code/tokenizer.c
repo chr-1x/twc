@@ -83,7 +83,8 @@ static token GetToken(tokenizer* Tokenizer)
     EatAllWhitespace(Tokenizer);
 
     token Token = {0};
-    switch(*Tokenizer->At) 
+    int C = *Tokenizer->At;
+    switch(C) 
     {
         case EOF:
         case '\0': 
